@@ -1,0 +1,14 @@
+node_modules
+dist
+dist-ssr
+build
+build-ssr
+logs
+src/providers/gql/types
+
+vite-env.d.ts
+src/vite-env.d.ts
+package-lock.json
+pnpm-lock.yaml
+
+*.svg

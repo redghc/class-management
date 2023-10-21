@@ -1,0 +1,50 @@
+{
+  "arrowParens": "always",
+  "bracketSameLine": false,
+  "bracketSpacing": true,
+  "endOfLine": "lf",
+  "jsxSingleQuote": false,
+  "printWidth": 100,
+  "quoteProps": "as-needed",
+  "semi": true,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "all",
+  "useTabs": false,
+  "plugins": ["@ianvs/prettier-plugin-sort-imports"],
+  "importOrder": [
+    "^(react|react-dom|next|vite)(/.*)?$",
+
+    "",
+
+    "<THIRD_PARTY_MODULES>",
+
+    "",
+
+    "^@/(?!(assets|language)/)(.*)$",
+    "^public/(?!(assets|favicon|fonts|logo)/)(.*)$",
+
+    "",
+
+    "^[./]",
+
+    "",
+
+    "^@fontsource/(.*)$",
+
+    "",
+
+    "^@/(assets|language)/(.*)$",
+    "^public/(assets|favicon|fonts|logo)/(.*)$",
+
+    "",
+
+    "<TYPES>",
+
+    "",
+
+    "<TYPES>^[.]"
+  ],
+  "importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"],
+  "importOrderTypeScriptVersion": "5.0.4"
+}
