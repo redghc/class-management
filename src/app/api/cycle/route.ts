@@ -1,18 +1,12 @@
 import { NextRequest } from 'next/server';
 
+import { ICycle } from '@/providers/database/models/Cycle';
 import { connectDB } from '@/providers/database/mongoDB';
 import {
   createCycle,
   getCycles,
   getTotalCyclesAndPages,
 } from '@/providers/database/query/cycleQuery';
-
-interface NewCycle {
-  name: string;
-  startDate: Date;
-  endDate: Date;
-  active: boolean;
-}
 
 export async function GET(request: NextRequest) {
   await connectDB();
@@ -40,7 +34,29 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   await connectDB();
 
-  const body: NewCycle = await request.json();
+  const body: ICycle = await request.json();
+
+  // Validate body
+  if (!body.name || !body.startDate || !body.endDate) {
+    return Response.json({
+      status: 'error',
+      message: 'Invalid body',
+    });
+  }
+
+  if (body.startDate > body.endDate) {
+    return Response.json({
+      status: 'error',
+      message: 'Start date must be lower than end date',
+    });
+  }
+
+  if (body.startDate === body.endDate) {
+    return Response.json({
+      status: 'error',
+      message: 'Start date must be different than end date',
+    });
+  }
 
   const cycle = await createCycle(body.name, body.startDate, body.endDate);
 

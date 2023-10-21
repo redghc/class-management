@@ -2,9 +2,10 @@ import { NextRequest } from 'next/server';
 
 import { isValidObjectId } from 'mongoose';
 
+import { ICycle } from '@/providers/database/models/Cycle';
 import { connectDB } from '@/providers/database/mongoDB';
 import {
-  enableDisableCycle,
+  changeCycleStatus,
   getCycleById,
   updateCycle,
 } from '@/providers/database/query/cycleQuery';
@@ -17,14 +18,7 @@ interface CycleParams {
   cycleId: string;
 }
 
-interface Cycle {
-  name: string;
-  startDate: Date;
-  endDate: Date;
-  active: boolean;
-}
-
-export async function GET(request: NextRequest, { params }: Params) {
+export async function GET(_: NextRequest, { params }: Params) {
   const cycleId = params.cycleId;
 
   // Valid mongo id
@@ -49,7 +43,7 @@ export async function GET(request: NextRequest, { params }: Params) {
 }
 
 export async function PUT(request: NextRequest, { params }: Params) {
-  const body: Cycle = await request.json();
+  const body: ICycle = await request.json();
   const cycleId = params.cycleId;
 
   // Valid mongo id
@@ -58,6 +52,27 @@ export async function PUT(request: NextRequest, { params }: Params) {
     return Response.json({
       status: 'error',
       message: 'Invalid cycle id',
+    });
+  }
+
+  if (!body.name || !body.startDate || !body.endDate) {
+    return Response.json({
+      status: 'error',
+      message: 'Missing fields',
+    });
+  }
+
+  if (body.startDate > body.endDate) {
+    return Response.json({
+      status: 'error',
+      message: 'Start date must be less than end date',
+    });
+  }
+
+  if (body.startDate === body.endDate) {
+    return Response.json({
+      status: 'error',
+      message: 'Start date must be less than end date',
     });
   }
 
@@ -74,7 +89,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
 }
 
 export async function PATCH(request: NextRequest, { params }: Params) {
-  const body: Cycle = await request.json();
+  const body: ICycle = await request.json();
   const cycleId = params.cycleId;
 
   // Valid mongo id
@@ -86,7 +101,16 @@ export async function PATCH(request: NextRequest, { params }: Params) {
     });
   }
 
-  const cycleData = await enableDisableCycle(cycleId, body.active);
+  if (body.active === undefined) {
+    return Response.json({
+      status: 'error',
+      message: 'Missing fields',
+    });
+  }
+
+  await connectDB();
+
+  const cycleData = await changeCycleStatus(cycleId, body.active);
 
   const response = {
     status: 'success',

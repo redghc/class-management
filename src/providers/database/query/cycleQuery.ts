@@ -24,6 +24,6 @@ export const updateCycle = async (id: string, name: string, startDate: Date, end
   return await CycleModel.findByIdAndUpdate(id, { name, startDate, endDate });
 };
 
-export const enableDisableCycle = async (id: string, active: boolean) => {
+export const changeCycleStatus = async (id: string, active: boolean) => {
   return await CycleModel.findByIdAndUpdate(id, { active });
 };

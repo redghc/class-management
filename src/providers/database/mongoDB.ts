@@ -2,22 +2,35 @@ import { connect, connection, disconnect } from 'mongoose';
 
 import { MONGO_URI } from '../constants/envs';
 
+declare global {
+  var mongoose: any;
+}
+
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
+
 export const connectDB = async () => {
-  // Validate if the connection is already open
-  if (connection.readyState === 1) {
-    console.log('Mongoose already connected');
-    return;
+  if (cached.conn) {
+    return cached.conn;
   }
 
-  if (connection.readyState === 2) {
-    console.log('Mongoose is connecting');
-    await new Promise((resolve) => connection.once('open', resolve));
-    return;
+  if (!cached.promise) {
+    const opts = { bufferCommands: false };
+    cached.promise = connect(MONGO_URI, opts).then((mongoose: any) => mongoose);
   }
 
-  const db = await connect(MONGO_URI);
-  console.log(`Connected to ${db.connection.name} database`);
-  console.log(`State: ${db.connection.readyState}`);
+  try {
+    cached.conn = await cached.promise;
+  } catch (e) {
+    cached.promise = null;
+    throw e;
+  }
+
+  console.log(`Connected to ${cached.conn.connection.name} database`);
+  return cached.conn;
 };
 
 export const disconnectDB = async () => {

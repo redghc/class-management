@@ -1,6 +1,15 @@
-import { model, Schema } from 'mongoose';
+import { Document, model, models, Schema } from 'mongoose';
 
-const CycleSchema = new Schema(
+export interface ICycle {
+  name: string;
+  startDate: Date;
+  endDate: Date;
+  active: boolean;
+}
+
+export interface CycleDocument extends ICycle, Document {}
+
+const CycleSchema = new Schema<CycleDocument>(
   {
     name: { type: String, required: true },
     startDate: { type: Date, required: true },
@@ -12,6 +21,4 @@ const CycleSchema = new Schema(
   },
 );
 
-const CycleModel = model('Cycle', CycleSchema);
-
-export default CycleModel;
+export default models.Cycle || model<CycleDocument>('Cycle', CycleSchema);

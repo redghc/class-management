@@ -1,4 +1,14 @@
-import { model, Schema } from 'mongoose';
+import { model, models, Schema } from 'mongoose';
+
+export interface IGroup {
+  name: string;
+  degree: string;
+  subject: string;
+  cycleId: string;
+  active: boolean;
+}
+
+export interface GroupDocument extends IGroup, Document {}
 
 const GroupSchema = new Schema(
   {
@@ -13,6 +23,4 @@ const GroupSchema = new Schema(
   },
 );
 
-const GroupModel = model('Group', GroupSchema);
-
-export default GroupModel;
+export default models.Group || model<GroupDocument>('Group', GroupSchema);
