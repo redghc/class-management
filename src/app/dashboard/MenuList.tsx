@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import BarChartIcon from '@mui/icons-material/BarChart';
@@ -11,6 +14,14 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
 const MenuList = () => {
+  const { pathname } = useRouter();
+
+  console.log('pathname', pathname);
+
+  const isRouteActive = (href: string) => {
+    return window.location.pathname === href;
+  };
+
   return (
     <>
       <ListItemButton LinkComponent={Link} href="/dashboard/cycle">
