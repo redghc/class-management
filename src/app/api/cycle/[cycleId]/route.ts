@@ -24,10 +24,15 @@ export async function GET(_: NextRequest, { params }: Params) {
   // Valid mongo id
   const isValid = isValidObjectId(cycleId);
   if (!isValid) {
-    return Response.json({
-      status: 'error',
-      message: 'Invalid cycle id',
-    });
+    return Response.json(
+      {
+        status: 'error',
+        message: 'Invalid cycle id',
+      },
+      {
+        status: 400,
+      },
+    );
   }
 
   await connectDB();
@@ -49,31 +54,51 @@ export async function PUT(request: NextRequest, { params }: Params) {
   // Valid mongo id
   const isValid = isValidObjectId(cycleId);
   if (!isValid) {
-    return Response.json({
-      status: 'error',
-      message: 'Invalid cycle id',
-    });
+    return Response.json(
+      {
+        status: 'error',
+        message: 'Invalid cycle id',
+      },
+      {
+        status: 400,
+      },
+    );
   }
 
   if (!body.name || !body.startDate || !body.endDate) {
-    return Response.json({
-      status: 'error',
-      message: 'Missing fields',
-    });
+    return Response.json(
+      {
+        status: 'error',
+        message: 'Missing fields',
+      },
+      {
+        status: 400,
+      },
+    );
   }
 
   if (body.startDate > body.endDate) {
-    return Response.json({
-      status: 'error',
-      message: 'Start date must be less than end date',
-    });
+    return Response.json(
+      {
+        status: 'error',
+        message: 'Start date must be less than end date',
+      },
+      {
+        status: 400,
+      },
+    );
   }
 
   if (body.startDate === body.endDate) {
-    return Response.json({
-      status: 'error',
-      message: 'Start date must be less than end date',
-    });
+    return Response.json(
+      {
+        status: 'error',
+        message: 'Start date must be less than end date',
+      },
+      {
+        status: 400,
+      },
+    );
   }
 
   await connectDB();
@@ -95,17 +120,27 @@ export async function PATCH(request: NextRequest, { params }: Params) {
   // Valid mongo id
   const isValid = isValidObjectId(cycleId);
   if (!isValid) {
-    return Response.json({
-      status: 'error',
-      message: 'Invalid cycle id',
-    });
+    return Response.json(
+      {
+        status: 'error',
+        message: 'Invalid cycle id',
+      },
+      {
+        status: 400,
+      },
+    );
   }
 
-  if (body.active === undefined) {
-    return Response.json({
-      status: 'error',
-      message: 'Missing fields',
-    });
+  if (body.active == null) {
+    return Response.json(
+      {
+        status: 'error',
+        message: 'Missing fields',
+      },
+      {
+        status: 400,
+      },
+    );
   }
 
   await connectDB();

@@ -35,9 +35,7 @@ const useCycleForm = (refetch: () => void) => {
 
   // ? ---------- Actions ----------
 
-  const handleOpenModal = useCallback(() => {
-    setOpen(true);
-  }, []);
+  const handleOpenModal = useCallback(() => setOpen(true), []);
 
   const handleCloseModal = useCallback(() => {
     refetch();

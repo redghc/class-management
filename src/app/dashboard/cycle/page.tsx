@@ -24,7 +24,7 @@ const Cycle = () => {
   const {
     page,
     rowsPerPage,
-    countPages,
+    countElements,
     handleChangePage,
     handleChangeRowsPerPage,
 
@@ -86,9 +86,11 @@ const Cycle = () => {
                   <StatusChip status={row.active} />
                 </TableCell>
                 <TableCell align="center">
+                  {/*
                   <IconButton>
                     <AddCircleIcon color="primary" />
                   </IconButton>
+                  */}
                   <IconButton onClick={() => handleToggleStatus(row._id)}>
                     <ToggleOffIcon color="error" />
                   </IconButton>
@@ -100,7 +102,7 @@ const Cycle = () => {
 
         <TablePagination
           component="div"
-          count={countPages}
+          count={countElements}
           page={page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}

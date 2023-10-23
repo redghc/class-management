@@ -9,7 +9,7 @@ import { getCycles, updateCycleStatus } from '@/providers/rest/classManagement/c
 const useCycle = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [countPages, setCountPages] = useState(0);
+  const [countElements, setCountElements] = useState(1);
 
   // ? ---------- QueryClient ----------
 
@@ -33,9 +33,9 @@ const useCycle = () => {
 
   useEffect(() => {
     if (statusCycle === 'success') {
-      setCountPages(dataCycle.pages);
+      setCountElements(dataCycle.total);
     }
-  }, [statusCycle, dataCycle?.pages]);
+  }, [statusCycle, dataCycle?.total]);
 
   // ? ---------- Actions ----------
 
@@ -69,7 +69,7 @@ const useCycle = () => {
   return {
     page,
     rowsPerPage,
-    countPages,
+    countElements,
     handleChangePage,
     handleChangeRowsPerPage,
 

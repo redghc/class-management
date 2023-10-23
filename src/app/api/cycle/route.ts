@@ -37,25 +37,40 @@ export async function POST(request: NextRequest) {
   const body: ICycle = await request.json();
 
   // Validate body
-  if (!body.name || !body.startDate || !body.endDate) {
-    return Response.json({
-      status: 'error',
-      message: 'Invalid body',
-    });
+  if (!body.name || !body.startDate || !body.endDate || body.active == null) {
+    return Response.json(
+      {
+        status: 'error',
+        message: 'Invalid body',
+      },
+      {
+        status: 400,
+      },
+    );
   }
 
   if (body.startDate > body.endDate) {
-    return Response.json({
-      status: 'error',
-      message: 'Start date must be lower than end date',
-    });
+    return Response.json(
+      {
+        status: 'error',
+        message: 'Start date must be lower than end date',
+      },
+      {
+        status: 400,
+      },
+    );
   }
 
   if (body.startDate === body.endDate) {
-    return Response.json({
-      status: 'error',
-      message: 'Start date must be different than end date',
-    });
+    return Response.json(
+      {
+        status: 'error',
+        message: 'Start date must be different than end date',
+      },
+      {
+        status: 400,
+      },
+    );
   }
 
   const cycle = await createCycle(body.name, body.startDate, body.endDate);
