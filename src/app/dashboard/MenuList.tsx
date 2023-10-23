@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import React from 'react';
+import { usePathname } from 'next/navigation';
+import React, { useCallback } from 'react';
 
 import BarChartIcon from '@mui/icons-material/BarChart';
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -14,41 +14,61 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
 const MenuList = () => {
-  const { pathname } = useRouter();
+  const pathname = usePathname();
 
-  console.log('pathname', pathname);
-
-  const isRouteActive = (href: string) => {
-    return window.location.pathname === href;
-  };
+  const isRouteActive = useCallback((href: string) => pathname === href, [pathname]);
 
   return (
     <>
-      <ListItemButton LinkComponent={Link} href="/dashboard/cycle">
+      <ListItemButton
+        LinkComponent={Link}
+        href="/dashboard/cycle"
+        selected={isRouteActive('/dashboard/cycle')}
+      >
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
         <ListItemText primary="Ciclos escolares" />
       </ListItemButton>
-      <ListItemButton LinkComponent={Link} href="/dashboard/group">
+
+      <ListItemButton
+        LinkComponent={Link}
+        href="/dashboard/group"
+        selected={isRouteActive('/dashboard/group')}
+      >
         <ListItemIcon>
           <GroupIcon />
         </ListItemIcon>
         <ListItemText primary="Grupos" />
       </ListItemButton>
-      <ListItemButton LinkComponent={Link} href="/dashboard/student">
+
+      <ListItemButton
+        LinkComponent={Link}
+        href="/dashboard/student"
+        selected={isRouteActive('/dashboard/student')}
+      >
         <ListItemIcon>
           <PersonIcon />
         </ListItemIcon>
         <ListItemText primary="Estudiantes" />
       </ListItemButton>
-      <ListItemButton LinkComponent={Link} href="/dashboard/work">
+
+      <ListItemButton
+        LinkComponent={Link}
+        href="/dashboard/work"
+        selected={isRouteActive('/dashboard/work')}
+      >
         <ListItemIcon>
           <LayersIcon />
         </ListItemIcon>
         <ListItemText primary="Tareas" />
       </ListItemButton>
-      <ListItemButton LinkComponent={Link} href="/dashboard/delivery">
+
+      <ListItemButton
+        LinkComponent={Link}
+        href="/dashboard/delivery"
+        selected={isRouteActive('/dashboard/delivery')}
+      >
         <ListItemIcon>
           <BarChartIcon />
         </ListItemIcon>
