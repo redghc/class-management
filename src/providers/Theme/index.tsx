@@ -2,6 +2,9 @@
 
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
+import { SnackbarProvider } from 'notistack';
 
 import '@fontsource/poppins/100.css';
 import '@fontsource/poppins/200.css';
@@ -27,7 +30,9 @@ const Theme = ({ children }: ThemeProps) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {children}
+      <SnackbarProvider>
+        <LocalizationProvider dateAdapter={AdapterLuxon}>{children}</LocalizationProvider>
+      </SnackbarProvider>
     </ThemeProvider>
   );
 };

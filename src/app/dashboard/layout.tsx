@@ -36,7 +36,6 @@ const drawerWidth = 240;
 const MainStyled = styled('main')(({ theme }) => ({
   backgroundColor:
     theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[900],
-  marginTop: 63,
   height: '100vh',
   flexGrow: 1,
   overflow: 'auto',
@@ -133,6 +132,8 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       </Drawer>
 
       <MainStyled>
+        <Toolbar />
+
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           {children}
         </Container>

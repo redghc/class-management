@@ -1,3 +1,4 @@
+import ReactQuery from '@/providers/ReactQuery';
 import Theme from '@/providers/Theme';
 
 import type { Metadata } from 'next';
@@ -10,9 +11,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <Theme>
-        <body>{children}</body>
-      </Theme>
+      <body>
+        <ReactQuery>
+          <Theme>{children}</Theme>
+        </ReactQuery>
+      </body>
     </html>
   );
 }

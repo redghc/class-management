@@ -1,7 +1,7 @@
 import CycleModel from '../models/Cycle';
 
 export const getCycles = async (page: number, limit: number) => {
-  return await CycleModel.find({ active: true })
+  return await CycleModel.find()
     .skip(page * limit)
     .limit(limit);
 };

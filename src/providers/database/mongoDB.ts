@@ -1,6 +1,6 @@
 import { connect, connection, disconnect } from 'mongoose';
 
-import { MONGO_URI } from '../constants/envs';
+import { MONGO_URI } from '../helpers/envs';
 
 declare global {
   var mongoose: any;

@@ -1,9 +1,9 @@
-import axios from 'axios';
+import ky from 'ky';
 
-import { BASE_URI } from '@/providers/constants/envs';
+import { BASE_URI } from '@/providers/helpers/envs';
 
-export const ClassAPI = axios.create({
-  baseURL: BASE_URI,
+export const ClassAPI = ky.create({
+  prefixUrl: BASE_URI,
   headers: {
     'Content-Type': 'application/json',
   },
