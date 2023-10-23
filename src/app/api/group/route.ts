@@ -1,12 +1,14 @@
 import { NextRequest } from 'next/server';
 
-import { ICycle } from '@/interfaces/cycle';
+import { isValidObjectId } from 'mongoose';
+
+import { IGroup } from '@/interfaces/group';
 import { connectDB } from '@/providers/database/mongoDB';
 import {
-  createCycle,
-  getCycles,
-  getTotalCyclesAndPages,
-} from '@/providers/database/query/cycleQuery';
+  createGroup,
+  getGroups,
+  getTotalGroupsAndPages,
+} from '@/providers/database/query/groupQuery';
 
 export async function GET(request: NextRequest) {
   await connectDB();
@@ -16,16 +18,16 @@ export async function GET(request: NextRequest) {
   const page = searchParams.get('page') ? parseInt(searchParams.get('page') as string) : 0;
   const limit = searchParams.get('limit') ? parseInt(searchParams.get('limit') as string) : 10;
 
-  const cycles = await getCycles(page, limit);
-  const cyclesAndPages = await getTotalCyclesAndPages(limit);
+  const groups = await getGroups(page, limit);
+  const groupsAndPages = await getTotalGroupsAndPages(limit);
 
   const response = {
     status: 'success',
-    data: cycles,
+    data: groups,
     page,
     limit,
-    total: cyclesAndPages.total,
-    pages: cyclesAndPages.pages,
+    total: groupsAndPages.total,
+    pages: groupsAndPages.pages,
   };
 
   return Response.json(response);
@@ -34,10 +36,10 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   await connectDB();
 
-  const body: ICycle = await request.json();
+  const body: IGroup = await request.json();
 
   // Validate body
-  if (!body.name || !body.startDate || !body.endDate || body.active == null) {
+  if (!body.name || !body.degree || !body.subject || !body.cycleId || body.active == null) {
     return Response.json(
       {
         status: 'error',
@@ -49,11 +51,12 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  if (body.startDate > body.endDate) {
+  const isValidCycle = isValidObjectId(body.cycleId);
+  if (!isValidCycle) {
     return Response.json(
       {
         status: 'error',
-        message: 'Start date must be lower than end date',
+        message: 'Invalid cycle id',
       },
       {
         status: 400,
@@ -61,23 +64,11 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  if (body.startDate === body.endDate) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Start date must be different than end date',
-      },
-      {
-        status: 400,
-      },
-    );
-  }
-
-  const cycle = await createCycle(body.name, body.startDate, body.endDate);
+  const group = await createGroup(body.name, body.degree, body.subject, body.cycleId);
 
   const response = {
     status: 'success',
-    data: cycle,
+    data: group,
   };
 
   return Response.json(response);

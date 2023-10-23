@@ -5,7 +5,7 @@ import { HTTPError } from 'ky';
 import { DateTime } from 'luxon';
 import { useSnackbar } from 'notistack';
 
-import { ICycle } from '@/providers/database/models/Cycle';
+import { ICycle } from '@/interfaces/cycle';
 import { createCycle } from '@/providers/rest/classManagement/cycle';
 
 export interface CycleForm extends Omit<ICycle, 'startDate' | 'endDate'> {
@@ -93,6 +93,7 @@ const useCycleForm = (refetch: () => void) => {
 
     try {
       await mutation.mutateAsync(payload);
+      enqueueSnackbar('Ciclo escolar creado correctamente', { variant: 'success' });
     } catch (error) {
       if (error instanceof HTTPError) {
         setFormError(error.message);

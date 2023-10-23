@@ -12,6 +12,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
 
 import CycleModal from '@/components/CycleModal';
 import StatusChip from '@/components/StatusChip';
@@ -24,7 +25,8 @@ const Cycle = () => {
   const {
     page,
     rowsPerPage,
-    countElements,
+    countCycles,
+
     handleChangePage,
     handleChangeRowsPerPage,
 
@@ -34,7 +36,7 @@ const Cycle = () => {
 
     handleToggleStatus,
 
-    refetchCycle,
+    refetch,
   } = useCycle();
 
   const {
@@ -50,7 +52,7 @@ const Cycle = () => {
 
     loading,
     onSubmit,
-  } = useCycleForm(refetchCycle);
+  } = useCycleForm(refetch);
 
   if (status === 'pending') return <Box>Cargando...</Box>;
 
@@ -58,6 +60,12 @@ const Cycle = () => {
 
   return (
     <>
+      <Box>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Ciclo escolar
+        </Typography>
+      </Box>
+
       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
         <IconButton onClick={handleOpenModal}>
           <AddCircleIcon color="primary" />
@@ -102,7 +110,7 @@ const Cycle = () => {
 
         <TablePagination
           component="div"
-          count={countElements}
+          count={countCycles}
           page={page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}

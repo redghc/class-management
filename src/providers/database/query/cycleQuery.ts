@@ -6,6 +6,10 @@ export const getCycles = async (page: number, limit: number) => {
     .limit(limit);
 };
 
+export const getActiveCycles = async () => {
+  return await CycleModel.find({ active: true });
+};
+
 export const getCycleById = async (id: string) => {
   return await CycleModel.findById(id);
 };

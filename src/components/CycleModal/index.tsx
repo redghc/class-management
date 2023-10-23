@@ -40,7 +40,7 @@ const CycleModal = ({
   return (
     <Dialog open={open} maxWidth="xs" fullWidth keepMounted>
       <form>
-        <DialogTitle>Añadir nuevo ciclo</DialogTitle>
+        <DialogTitle>Añadir nuevo ciclo escolar</DialogTitle>
 
         <DialogContent dividers>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>

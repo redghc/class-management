@@ -1,20 +1,12 @@
 import { model, models, Schema } from 'mongoose';
 
-export interface IGroup {
-  name: string;
-  degree: string;
-  subject: string;
-  cycleId: string;
-  active: boolean;
-}
-
-export interface GroupDocument extends IGroup, Document {}
+import { GroupDegree, GroupDocument, GroupSubject } from '@/interfaces/group';
 
 const GroupSchema = new Schema(
   {
     name: { type: String, required: true },
-    degree: { type: String, required: true },
-    subject: { type: String, required: true },
+    degree: { type: String, required: true, enum: Object.values(GroupDegree) },
+    subject: { type: String, required: true, enum: Object.values(GroupSubject) },
     cycleId: { type: Schema.Types.ObjectId, ref: 'Cycle', required: true, index: true },
     active: { type: Boolean, required: true, default: true, index: true },
   },

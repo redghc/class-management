@@ -2,31 +2,31 @@ import { ChangeEvent, MouseEvent, useCallback, useEffect, useState } from 'react
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-import { getCycles, updateCycleStatus } from '@/providers/rest/classManagement/cycle';
+import { getGroups, updateGroupStatus } from '@/providers/rest/classManagement/group';
 
-const useCycle = () => {
+const useGroup = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [countCycles, setCountCycles] = useState(1);
+  const [countGroups, setCountGroups] = useState(1);
 
   // ? ---------- QueryClient ----------
 
   const { status, data, error, refetch } = useQuery({
-    queryKey: ['cycles', { page, rowsPerPage }],
-    queryFn: () => getCycles(page, rowsPerPage),
+    queryKey: ['groups', { page, rowsPerPage }],
+    queryFn: () => getGroups(page, rowsPerPage),
   });
 
   const mutation = useMutation({
-    mutationKey: ['cycle'],
+    mutationKey: ['group'],
     mutationFn: (params: { id: string; status: boolean }) =>
-      updateCycleStatus(params.id, params.status),
+      updateGroupStatus(params.id, params.status),
   });
 
   // ? ---------- Effects ----------
 
   useEffect(() => {
     if (status === 'success') {
-      setCountCycles(data.total);
+      setCountGroups(data.total);
     }
   }, [status, data?.total]);
 
@@ -49,10 +49,10 @@ const useCycle = () => {
 
   const handleToggleStatus = useCallback(
     async (id: string) => {
-      const cycle = data?.data.find((cycle) => cycle._id === id);
+      const group = data?.data.find((cycle) => cycle._id === id);
 
-      if (cycle) {
-        await mutation.mutateAsync({ id, status: !cycle.active });
+      if (group) {
+        await mutation.mutateAsync({ id, status: !group.active });
         await refetch();
       }
     },
@@ -62,7 +62,7 @@ const useCycle = () => {
   return {
     page,
     rowsPerPage,
-    countCycles,
+    countGroups,
 
     handleChangePage,
     handleChangeRowsPerPage,
@@ -77,4 +77,4 @@ const useCycle = () => {
   };
 };
 
-export default useCycle;
+export default useGroup;

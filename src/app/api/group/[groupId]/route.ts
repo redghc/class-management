@@ -2,32 +2,32 @@ import { NextRequest } from 'next/server';
 
 import { isValidObjectId } from 'mongoose';
 
-import { ICycle } from '@/interfaces/cycle';
+import { IGroup } from '@/interfaces/group';
 import { connectDB } from '@/providers/database/mongoDB';
 import {
-  changeCycleStatus,
-  getCycleById,
-  updateCycle,
-} from '@/providers/database/query/cycleQuery';
+  changeGroupStatus,
+  getGroupById,
+  updateGroup,
+} from '@/providers/database/query/groupQuery';
 
 interface Params {
-  params: CycleParams;
+  params: GroupParams;
 }
 
-interface CycleParams {
-  cycleId: string;
+interface GroupParams {
+  groupId: string;
 }
 
 export async function GET(_: NextRequest, { params }: Params) {
-  const cycleId = params.cycleId;
+  const groupId = params.groupId;
 
   // Valid mongo id
-  const isValid = isValidObjectId(cycleId);
+  const isValid = isValidObjectId(groupId);
   if (!isValid) {
     return Response.json(
       {
         status: 'error',
-        message: 'Invalid cycle id',
+        message: 'Invalid group id',
       },
       {
         status: 400,
@@ -37,63 +37,40 @@ export async function GET(_: NextRequest, { params }: Params) {
 
   await connectDB();
 
-  const cycleData = await getCycleById(cycleId);
+  const groupData = await getGroupById(groupId);
 
   const response = {
     status: 'success',
-    data: cycleData,
+    data: groupData,
   };
 
   return Response.json(response);
 }
 
 export async function PUT(request: NextRequest, { params }: Params) {
-  const body: ICycle = await request.json();
-  const cycleId = params.cycleId;
+  const body: IGroup = await request.json();
+  const groupId = params.groupId;
 
   // Valid mongo id
-  const isValid = isValidObjectId(cycleId);
+  const isValid = isValidObjectId(groupId);
   if (!isValid) {
     return Response.json(
       {
         status: 'error',
+        message: 'Invalid group id',
+      },
+      {
+        status: 400,
+      },
+    );
+  }
+
+  const isValidCycle = isValidObjectId(body.cycleId);
+  if (!isValidCycle) {
+    return Response.json(
+      {
+        status: 'error',
         message: 'Invalid cycle id',
-      },
-      {
-        status: 400,
-      },
-    );
-  }
-
-  if (!body.name || !body.startDate || !body.endDate) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Missing fields',
-      },
-      {
-        status: 400,
-      },
-    );
-  }
-
-  if (body.startDate > body.endDate) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Start date must be less than end date',
-      },
-      {
-        status: 400,
-      },
-    );
-  }
-
-  if (body.startDate === body.endDate) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Start date must be less than end date',
       },
       {
         status: 400,
@@ -103,27 +80,27 @@ export async function PUT(request: NextRequest, { params }: Params) {
 
   await connectDB();
 
-  const cycleData = await updateCycle(cycleId, body.name, body.startDate, body.endDate);
+  const groupData = await updateGroup(groupId, body.name, body.degree, body.subject, body.cycleId);
 
   const response = {
     status: 'success',
-    data: cycleData,
+    data: groupData,
   };
 
   return Response.json(response);
 }
 
 export async function PATCH(request: NextRequest, { params }: Params) {
-  const body: ICycle = await request.json();
-  const cycleId = params.cycleId;
+  const body: IGroup = await request.json();
+  const groupId = params.groupId;
 
   // Valid mongo id
-  const isValid = isValidObjectId(cycleId);
+  const isValid = isValidObjectId(groupId);
   if (!isValid) {
     return Response.json(
       {
         status: 'error',
-        message: 'Invalid cycle id',
+        message: 'Invalid group id',
       },
       {
         status: 400,
@@ -135,7 +112,7 @@ export async function PATCH(request: NextRequest, { params }: Params) {
     return Response.json(
       {
         status: 'error',
-        message: 'Missing fields',
+        message: 'Invalid body',
       },
       {
         status: 400,
@@ -145,7 +122,7 @@ export async function PATCH(request: NextRequest, { params }: Params) {
 
   await connectDB();
 
-  const cycleData = await changeCycleStatus(cycleId, body.active);
+  const cycleData = await changeGroupStatus(groupId, body.active);
 
   const response = {
     status: 'success',

@@ -1,13 +1,6 @@
-import { Document, model, models, Schema } from 'mongoose';
+import { model, models, Schema } from 'mongoose';
 
-export interface ICycle {
-  name: string;
-  startDate: Date;
-  endDate: Date;
-  active: boolean;
-}
-
-export interface CycleDocument extends ICycle, Document {}
+import { CycleDocument } from '@/interfaces/cycle';
 
 const CycleSchema = new Schema<CycleDocument>(
   {

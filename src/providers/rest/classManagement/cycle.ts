@@ -1,29 +1,28 @@
-import { ICycle } from '@/providers/database/models/Cycle';
+import { ICycle, RCycle } from '@/interfaces/cycle';
 
 import { ClassAPI } from './ClassAPI';
 
 export interface CyclesResponse {
   status: string;
-  data: Cycle[];
+  data: RCycle[];
   page: number;
   limit: number;
   total: number;
   pages: number;
 }
 
-export interface Cycle {
-  _id: string;
-  name: string;
-  startDate: string;
-  endDate: string;
-  active: boolean;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
+export interface CyclesActiveResponse {
+  status: string;
+  data: RCycle[];
 }
 
 export const getCycles = async (page: number, limit: number) => {
   const response = await ClassAPI.get(`cycle?page=${page}&limit=${limit}`).json<CyclesResponse>();
+  return response;
+};
+
+export const getCyclesActive = async () => {
+  const response = await ClassAPI.get('cycle/active').json<CyclesActiveResponse>();
   return response;
 };
 
