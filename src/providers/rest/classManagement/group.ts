@@ -11,8 +11,18 @@ export interface GroupsResponse {
   pages: number;
 }
 
+export interface GroupsActiveResponse {
+  status: string;
+  data: RGroup[];
+}
+
 export const getGroups = async (page: number, limit: number) => {
   const response = await ClassAPI.get(`group?page=${page}&limit=${limit}`).json<GroupsResponse>();
+  return response;
+};
+
+export const getGroupsActive = async () => {
+  const response = await ClassAPI.get('group/active').json<GroupsActiveResponse>();
   return response;
 };
 

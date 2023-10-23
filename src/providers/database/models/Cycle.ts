@@ -14,4 +14,4 @@ const CycleSchema = new Schema<CycleDocument>(
   },
 );
 
-export default models.Cycle || model<CycleDocument>('Cycle', CycleSchema);
+export default models.Cycle ?? model<CycleDocument>('Cycle', CycleSchema);

@@ -7,6 +7,10 @@ export const getGroups = async (page: number, limit: number) => {
     .limit(limit);
 };
 
+export const getActiveGroups = async () => {
+  return await GroupModel.find({ active: true }).populate('cycleId');
+};
+
 export const getGroupById = async (id: string) => {
   return await GroupModel.findById(id).populate('cycleId');
 };

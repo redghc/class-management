@@ -32,8 +32,6 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  await connectDB();
-
   const body: ICycle = await request.json();
 
   // Validate body
@@ -72,6 +70,8 @@ export async function POST(request: NextRequest) {
       },
     );
   }
+
+  await connectDB();
 
   const cycle = await createCycle(body.name, body.startDate, body.endDate);
 

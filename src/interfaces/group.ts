@@ -30,10 +30,9 @@ export enum GroupSubject {
   ENGLISH = 'english',
 }
 
-export interface GroupForm extends IGroup {}
-
 export interface GroupDocument extends IGroup, Document {}
 
+export interface GroupForm extends IGroup {}
 export interface RGroup {
   _id: string;
   name: string;

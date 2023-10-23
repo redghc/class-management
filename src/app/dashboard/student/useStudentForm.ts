@@ -5,35 +5,35 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { HTTPError } from 'ky';
 import { useSnackbar } from 'notistack';
 import { useForm } from 'react-hook-form';
-import { bool, mixed, object, ObjectSchema, string } from 'yup';
+import { array, bool, object, ObjectSchema, string } from 'yup';
 
-import { GroupDegree, GroupForm, GroupSubject, IGroup } from '@/interfaces/group';
-import { getCyclesActive } from '@/providers/rest/classManagement/cycle';
-import { createGroup } from '@/providers/rest/classManagement/group';
+import { IStudent, StudentForm } from '@/interfaces/student';
+import { getGroupsActive } from '@/providers/rest/classManagement/group';
+import { createStudent } from '@/providers/rest/classManagement/student';
 
-const initialState: GroupForm = {
-  name: '',
-  subject: GroupSubject.MATH,
-  degree: GroupDegree.FIRST,
-  cycleId: '',
+const initialState: StudentForm = {
+  firstName: '',
+  secondName: '',
+  lastName: '',
+  secondLastName: '',
+  groupIds: [],
   active: true,
 };
 
-const validationSchema: ObjectSchema<GroupForm> = object({
-  name: string().trim().required('El nombre es requerido'),
-  subject: mixed<GroupSubject>()
-    .oneOf(Object.values(GroupSubject))
-    .required('La materia es requerida'),
-  degree: mixed<GroupDegree>().oneOf(Object.values(GroupDegree)).required('El grado es requerido'),
-  cycleId: string().trim().required('El ciclo es requerido'),
+const validationSchema: ObjectSchema<StudentForm> = object({
+  firstName: string().trim().required('El primer nombre es requerido'),
+  secondName: string().trim(),
+  lastName: string().trim().required('El primer apellido es requerido'),
+  secondLastName: string().trim(),
+  groupIds: array().required('El grupo es requerido'),
   active: bool().required(),
 });
 
-const useGroupForm = (refetch: () => void) => {
+const useStudentForm = (refetch: () => void) => {
   const [open, setOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
-  const { handleSubmit, control, reset } = useForm<GroupForm>({
+  const { handleSubmit, control, reset } = useForm<StudentForm>({
     defaultValues: initialState,
     resolver: yupResolver(validationSchema),
     mode: 'onBlur',
@@ -42,13 +42,13 @@ const useGroupForm = (refetch: () => void) => {
   // ? ---------- QueryClient ----------
 
   const { isLoading, data } = useQuery({
-    queryKey: ['activeCycles'],
-    queryFn: getCyclesActive,
+    queryKey: ['activeGroups'],
+    queryFn: getGroupsActive,
   });
 
   const mutation = useMutation({
-    mutationKey: ['newGroup'],
-    mutationFn: (data: IGroup) => createGroup(data),
+    mutationKey: ['newStudent'],
+    mutationFn: (data: IStudent) => createStudent(data),
   });
 
   // ? ---------- Actions ----------
@@ -62,21 +62,21 @@ const useGroupForm = (refetch: () => void) => {
   }, []);
 
   const onSubmit = useCallback(
-    async (data: GroupForm) => {
+    async (data: StudentForm) => {
       mutation.mutate(data, {
         onSuccess: () => {
-          enqueueSnackbar('Grupo creado correctamente', { variant: 'success' });
+          enqueueSnackbar('Estudiante creado correctamente', { variant: 'success' });
           handleCloseModal();
         },
         onError: (error) => {
-          console.error('Error: GroupForm', error);
+          console.error('Error: StudentForm', error);
 
           if (error instanceof HTTPError) {
             enqueueSnackbar(error.message, { variant: 'error' });
             return;
           }
 
-          enqueueSnackbar('Ocurrió un error al crear el grupo, intenta mas tarde', {
+          enqueueSnackbar('Ocurrió un error al crear el estudiante, intenta mas tarde', {
             variant: 'error',
           });
         },
@@ -91,7 +91,7 @@ const useGroupForm = (refetch: () => void) => {
     control,
     onSubmit: handleSubmitForm,
     loading: mutation.isPending ?? isLoading,
-    cycles: data?.data ?? [],
+    groups: data?.data ?? [],
 
     open,
     handleOpenModal,
@@ -99,4 +99,4 @@ const useGroupForm = (refetch: () => void) => {
   };
 };
 
-export default useGroupForm;
+export default useStudentForm;

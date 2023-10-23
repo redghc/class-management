@@ -1,29 +1,31 @@
 import StudentModel from '../models/Student';
 
 export const getStudents = async (page: number, limit: number) => {
-  return await StudentModel.find({ active: true })
+  return await StudentModel.find()
+    .populate('groupIds')
     .skip(page * limit)
     .limit(limit);
 };
 
 export const getStudentsByGroup = async (groupId: string, page: number, limit: number) => {
-  return await StudentModel.find({ groupId, active: true })
+  return await StudentModel.find({ groupId })
+    .populate('groupIds')
     .skip(page * limit)
     .limit(limit);
 };
 
 export const getStudentById = async (id: string) => {
-  return await StudentModel.findById(id);
+  return await StudentModel.findById(id).populate('groupIds');
 };
 
 export const getTotalStudentsAndPages = async (limit: number) => {
-  const total = await StudentModel.countDocuments({ active: true });
+  const total = await StudentModel.countDocuments();
   const pages = Math.ceil(total / limit);
   return { total, pages };
 };
 
 export const getTotalStudentsAndPagesByGroup = async (groupId: string, limit: number) => {
-  const total = await StudentModel.countDocuments({ groupId, active: true });
+  const total = await StudentModel.countDocuments({ groupId });
   const pages = Math.ceil(total / limit);
   return { total, pages };
 };

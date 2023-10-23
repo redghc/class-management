@@ -21,4 +21,4 @@ const DeliverySchema = new Schema(
   },
 );
 
-export default models.Delivered || model<DeliveryDocument>('Delivered', DeliverySchema);
+export default models.Delivered ?? model<DeliveryDocument>('Delivered', DeliverySchema);

@@ -23,4 +23,4 @@ const WorkSchema = new Schema(
   },
 );
 
-export default models.Work || model<WorkDocument>('Work', WorkSchema);
+export default models.Work ?? model<WorkDocument>('Work', WorkSchema);

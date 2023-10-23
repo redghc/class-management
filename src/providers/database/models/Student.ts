@@ -1,15 +1,6 @@
 import { model, models, Schema } from 'mongoose';
 
-export interface IStudent {
-  firstName: string;
-  secondName?: string;
-  lastName: string;
-  secondLastName?: string;
-  groupIds: string[];
-  active: boolean;
-}
-
-export interface StudentDocument extends IStudent, Document {}
+import { StudentDocument } from '@/interfaces/student';
 
 const StudentSchema = new Schema(
   {
@@ -25,4 +16,4 @@ const StudentSchema = new Schema(
   },
 );
 
-export default models.Student || model<StudentDocument>('Student', StudentSchema);
+export default models.Student ?? model<StudentDocument>('Student', StudentSchema);

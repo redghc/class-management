@@ -34,8 +34,6 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  await connectDB();
-
   const body: IGroup = await request.json();
 
   // Validate body
@@ -63,6 +61,8 @@ export async function POST(request: NextRequest) {
       },
     );
   }
+
+  await connectDB();
 
   const group = await createGroup(body.name, body.degree, body.subject, body.cycleId);
 

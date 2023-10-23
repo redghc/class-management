@@ -19,4 +19,4 @@ const AttendanceSchema = new Schema<AttendanceDocument>(
   },
 );
 
-export default models.Attendance || model<AttendanceDocument>('Attendance', AttendanceSchema);
+export default models.Attendance ?? model<AttendanceDocument>('Attendance', AttendanceSchema);
