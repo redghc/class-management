@@ -3,6 +3,7 @@
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ToggleOffIcon from '@mui/icons-material/ToggleOff';
 import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -89,9 +90,11 @@ const Student = () => {
                   {row.lastName} {row.secondLastName}
                 </TableCell>
                 <TableCell align="center">
-                  {row.groupIds.map((group) => (
-                    <span key={group._id}>{group.name}</span>
-                  ))}
+                  <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, flexWrap: 'wrap' }}>
+                    {row.groupIds.map((group) => (
+                      <Chip key={group._id} label={group.name} />
+                    ))}
+                  </Box>
                 </TableCell>
                 <TableCell align="center">
                   <StatusChip status={row.active} />

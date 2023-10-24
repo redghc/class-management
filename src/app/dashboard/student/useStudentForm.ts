@@ -25,7 +25,7 @@ const validationSchema: ObjectSchema<StudentForm> = object({
   secondName: string().trim(),
   lastName: string().trim().required('El primer apellido es requerido'),
   secondLastName: string().trim(),
-  groupIds: array().required('El grupo es requerido'),
+  groupIds: array().min(1, 'Debes seleccionar al menos un grupo'),
   active: bool().required(),
 });
 

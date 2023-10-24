@@ -83,7 +83,6 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   const body: IStudent = await request.json();
 
-  // Validate body
   const isValidBody = validateBody(body);
   if (isValidBody !== true) {
     return isValidBody;

@@ -1,7 +1,5 @@
 import { NextRequest } from 'next/server';
 
-import { isValidObjectId } from 'mongoose';
-
 import { IGroup } from '@/interfaces/group';
 import { connectDB } from '@/providers/database/mongoDB';
 import {
@@ -9,6 +7,9 @@ import {
   getGroupById,
   updateGroup,
 } from '@/providers/database/query/groupQuery';
+import { validateBoolean, validateId } from '@/providers/validations/validations';
+
+import { validateBody } from '../route';
 
 interface Params {
   params: GroupParams;
@@ -21,18 +22,9 @@ interface GroupParams {
 export async function GET(_: NextRequest, { params }: Params) {
   const groupId = params.groupId;
 
-  // Valid mongo id
-  const isValid = isValidObjectId(groupId);
-  if (!isValid) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Invalid group id',
-      },
-      {
-        status: 400,
-      },
-    );
+  const isValid = validateId(groupId, 'group');
+  if (isValid !== true) {
+    return isValid;
   }
 
   await connectDB();
@@ -51,31 +43,19 @@ export async function PUT(request: NextRequest, { params }: Params) {
   const body: IGroup = await request.json();
   const groupId = params.groupId;
 
-  // Valid mongo id
-  const isValid = isValidObjectId(groupId);
-  if (!isValid) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Invalid group id',
-      },
-      {
-        status: 400,
-      },
-    );
+  const isValid = validateId(groupId, 'group');
+  if (isValid !== true) {
+    return isValid;
   }
 
-  const isValidCycle = isValidObjectId(body.cycleId);
-  if (!isValidCycle) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Invalid cycle id',
-      },
-      {
-        status: 400,
-      },
-    );
+  const isValidCycle = validateId(body.cycleId, 'cycle');
+  if (isValidCycle !== true) {
+    return isValidCycle;
+  }
+
+  const isValidBody = validateBody(body);
+  if (isValidBody !== true) {
+    return isValidBody;
   }
 
   await connectDB();
@@ -94,30 +74,14 @@ export async function PATCH(request: NextRequest, { params }: Params) {
   const body: IGroup = await request.json();
   const groupId = params.groupId;
 
-  // Valid mongo id
-  const isValid = isValidObjectId(groupId);
-  if (!isValid) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Invalid group id',
-      },
-      {
-        status: 400,
-      },
-    );
+  const isValid = validateId(groupId, 'group');
+  if (isValid !== true) {
+    return isValid;
   }
 
-  if (body.active == null) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Invalid body',
-      },
-      {
-        status: 400,
-      },
-    );
+  const isValidActive = validateBoolean(body.active);
+  if (isValidActive !== true) {
+    return isValidActive;
   }
 
   await connectDB();

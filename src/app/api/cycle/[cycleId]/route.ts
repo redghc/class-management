@@ -1,7 +1,5 @@
 import { NextRequest } from 'next/server';
 
-import { isValidObjectId } from 'mongoose';
-
 import { ICycle } from '@/interfaces/cycle';
 import { connectDB } from '@/providers/database/mongoDB';
 import {
@@ -9,6 +7,9 @@ import {
   getCycleById,
   updateCycle,
 } from '@/providers/database/query/cycleQuery';
+import { validateBoolean, validateId } from '@/providers/validations/validations';
+
+import { validateBody } from '../route';
 
 interface Params {
   params: CycleParams;
@@ -21,18 +22,9 @@ interface CycleParams {
 export async function GET(_: NextRequest, { params }: Params) {
   const cycleId = params.cycleId;
 
-  // Valid mongo id
-  const isValid = isValidObjectId(cycleId);
-  if (!isValid) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Invalid cycle id',
-      },
-      {
-        status: 400,
-      },
-    );
+  const isValid = validateId(cycleId, 'cycle');
+  if (isValid !== true) {
+    return isValid;
   }
 
   await connectDB();
@@ -51,54 +43,14 @@ export async function PUT(request: NextRequest, { params }: Params) {
   const body: ICycle = await request.json();
   const cycleId = params.cycleId;
 
-  // Valid mongo id
-  const isValid = isValidObjectId(cycleId);
-  if (!isValid) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Invalid cycle id',
-      },
-      {
-        status: 400,
-      },
-    );
+  const isValid = validateId(cycleId, 'cycle');
+  if (isValid !== true) {
+    return isValid;
   }
 
-  if (!body.name || !body.startDate || !body.endDate) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Missing fields',
-      },
-      {
-        status: 400,
-      },
-    );
-  }
-
-  if (body.startDate > body.endDate) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Start date must be less than end date',
-      },
-      {
-        status: 400,
-      },
-    );
-  }
-
-  if (body.startDate === body.endDate) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Start date must be less than end date',
-      },
-      {
-        status: 400,
-      },
-    );
+  const isValidBody = validateBody(body);
+  if (isValidBody !== true) {
+    return isValidBody;
   }
 
   await connectDB();
@@ -117,30 +69,14 @@ export async function PATCH(request: NextRequest, { params }: Params) {
   const body: ICycle = await request.json();
   const cycleId = params.cycleId;
 
-  // Valid mongo id
-  const isValid = isValidObjectId(cycleId);
-  if (!isValid) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Invalid cycle id',
-      },
-      {
-        status: 400,
-      },
-    );
+  const isValid = validateId(cycleId, 'cycle');
+  if (isValid !== true) {
+    return isValid;
   }
 
-  if (body.active == null) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Missing fields',
-      },
-      {
-        status: 400,
-      },
-    );
+  const isValidActive = validateBoolean(body.active);
+  if (isValidActive !== true) {
+    return isValidActive;
   }
 
   await connectDB();

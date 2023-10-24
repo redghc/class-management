@@ -1,7 +1,5 @@
 import { NextRequest } from 'next/server';
 
-import { isValidObjectId } from 'mongoose';
-
 import { IGroup } from '@/interfaces/group';
 import { connectDB } from '@/providers/database/mongoDB';
 import {
@@ -9,6 +7,28 @@ import {
   getGroups,
   getTotalGroupsAndPages,
 } from '@/providers/database/query/groupQuery';
+import { validateId } from '@/providers/validations/validations';
+
+export const validateBody = (body: IGroup) => {
+  if (!body.name || !body.degree || !body.subject || !body.cycleId || body.active == null) {
+    return Response.json(
+      {
+        status: 'error',
+        message: 'Invalid body',
+      },
+      {
+        status: 400,
+      },
+    );
+  }
+
+  const isValidCycle = validateId(body.cycleId, 'cycle');
+  if (isValidCycle !== true) {
+    return isValidCycle;
+  }
+
+  return true;
+};
 
 export async function GET(request: NextRequest) {
   await connectDB();
@@ -36,30 +56,9 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   const body: IGroup = await request.json();
 
-  // Validate body
-  if (!body.name || !body.degree || !body.subject || !body.cycleId || body.active == null) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Invalid body',
-      },
-      {
-        status: 400,
-      },
-    );
-  }
-
-  const isValidCycle = isValidObjectId(body.cycleId);
-  if (!isValidCycle) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Invalid cycle id',
-      },
-      {
-        status: 400,
-      },
-    );
+  const isValidBody = validateBody(body);
+  if (isValidBody !== true) {
+    return isValidBody;
   }
 
   await connectDB();

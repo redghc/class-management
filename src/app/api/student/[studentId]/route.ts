@@ -6,6 +6,7 @@ import { IStudent } from '@/interfaces/student';
 import { connectDB } from '@/providers/database/mongoDB';
 import { changeStudentStatus, getStudentById } from '@/providers/database/query/studentQuery';
 import { updateStudent } from '@/providers/rest/classManagement/student';
+import { validateBoolean, validateId } from '@/providers/validations/validations';
 
 import { validateBody } from '../route';
 
@@ -20,18 +21,9 @@ interface StudentParams {
 export async function GET(_: NextRequest, { params }: Params) {
   const studentId = params.studentId;
 
-  // Valid mongo id
-  const isValid = isValidObjectId(studentId);
-  if (!isValid) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Invalid student id',
-      },
-      {
-        status: 400,
-      },
-    );
+  const isValid = validateId(studentId, 'student');
+  if (isValid !== true) {
+    return isValid;
   }
 
   await connectDB();
@@ -50,18 +42,9 @@ export async function PUT(request: NextRequest, { params }: Params) {
   const body: IStudent = await request.json();
   const studentId = params.studentId;
 
-  // Valid mongo id
-  const isValid = isValidObjectId(studentId);
-  if (!isValid) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Invalid student id',
-      },
-      {
-        status: 400,
-      },
-    );
+  const isValid = validateId(studentId, 'student');
+  if (isValid !== true) {
+    return isValid;
   }
 
   const isValidBody = validateBody(body);
@@ -85,30 +68,14 @@ export async function PATCH(request: NextRequest, { params }: Params) {
   const body: IStudent = await request.json();
   const studentId = params.studentId;
 
-  // Valid mongo id
-  const isValid = isValidObjectId(studentId);
-  if (!isValid) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Invalid student id',
-      },
-      {
-        status: 400,
-      },
-    );
+  const isValid = validateId(studentId, 'student');
+  if (isValid !== true) {
+    return isValid;
   }
 
-  if (body.active == null) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Invalid body',
-      },
-      {
-        status: 400,
-      },
-    );
+  const isValidActive = validateBoolean(body.active);
+  if (isValidActive !== true) {
+    return isValidActive;
   }
 
   await connectDB();
