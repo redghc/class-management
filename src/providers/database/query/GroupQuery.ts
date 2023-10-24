@@ -1,4 +1,4 @@
-import GroupModel from '../models/Group';
+import GroupModel from '../models/GroupModel';
 
 export const getGroups = async (page: number, limit: number) => {
   return await GroupModel.find()

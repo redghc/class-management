@@ -1,14 +1,11 @@
 import { NextRequest } from 'next/server';
 
-import { isValidObjectId } from 'mongoose';
-
 import { IStudent } from '@/interfaces/student';
 import { connectDB } from '@/providers/database/mongoDB';
-import { changeStudentStatus, getStudentById } from '@/providers/database/query/studentQuery';
+import { changeStudentStatus, getStudentById } from '@/providers/database/query/StudentQuery';
 import { updateStudent } from '@/providers/rest/classManagement/student';
+import { validateBody } from '@/providers/validations/student';
 import { validateBoolean, validateId } from '@/providers/validations/validations';
-
-import { validateBody } from '../route';
 
 interface Params {
   params: StudentParams;

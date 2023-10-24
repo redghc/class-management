@@ -6,10 +6,9 @@ import {
   changeGroupStatus,
   getGroupById,
   updateGroup,
-} from '@/providers/database/query/groupQuery';
+} from '@/providers/database/query/GroupQuery';
+import { validateBody } from '@/providers/validations/group';
 import { validateBoolean, validateId } from '@/providers/validations/validations';
-
-import { validateBody } from '../route';
 
 interface Params {
   params: GroupParams;

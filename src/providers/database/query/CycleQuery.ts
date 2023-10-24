@@ -1,4 +1,4 @@
-import CycleModel from '../models/Cycle';
+import CycleModel from '../models/CycleModel';
 
 export const getCycles = async (page: number, limit: number) => {
   return await CycleModel.find()

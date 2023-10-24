@@ -1,4 +1,4 @@
-import DeliveryModel from '../models/Delivery';
+import DeliveryModel from '../models/DeliveryModel';
 
 export const getDeliveries = async (page: number, limit: number) => {
   return await DeliveryModel.find({ active: true })

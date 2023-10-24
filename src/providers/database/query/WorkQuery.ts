@@ -1,4 +1,4 @@
-import WorkModel from '../models/Work';
+import WorkModel from '../models/WorkModel';
 
 export const getWorks = async (page: number, limit: number) => {
   return await WorkModel.find({ active: true })

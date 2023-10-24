@@ -6,29 +6,8 @@ import {
   createGroup,
   getGroups,
   getTotalGroupsAndPages,
-} from '@/providers/database/query/groupQuery';
-import { validateId } from '@/providers/validations/validations';
-
-export const validateBody = (body: IGroup) => {
-  if (!body.name || !body.degree || !body.subject || !body.cycleId || body.active == null) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Invalid body',
-      },
-      {
-        status: 400,
-      },
-    );
-  }
-
-  const isValidCycle = validateId(body.cycleId, 'cycle');
-  if (isValidCycle !== true) {
-    return isValidCycle;
-  }
-
-  return true;
-};
+} from '@/providers/database/query/GroupQuery';
+import { validateBody } from '@/providers/validations/group';
 
 export async function GET(request: NextRequest) {
   await connectDB();

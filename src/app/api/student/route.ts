@@ -1,61 +1,13 @@
 import { NextRequest } from 'next/server';
 
-import { isValidObjectId } from 'mongoose';
-
 import { IStudent } from '@/interfaces/student';
 import { connectDB } from '@/providers/database/mongoDB';
 import {
   createStudent,
   getStudents,
   getTotalStudentsAndPages,
-} from '@/providers/database/query/studentQuery';
-
-export const validateBody = (body: IStudent) => {
-  if (
-    !body.firstName ||
-    !body.secondName ||
-    !body.lastName ||
-    !body.secondLastName ||
-    body.active == null
-  ) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Invalid body',
-      },
-      {
-        status: 400,
-      },
-    );
-  }
-
-  if (!Array.isArray(body.groupIds) || body.groupIds.length === 0) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Invalid body',
-      },
-      {
-        status: 400,
-      },
-    );
-  }
-
-  const isValidGroups = body.groupIds.every((groupId) => isValidObjectId(groupId));
-  if (!isValidGroups) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Invalid group ids',
-      },
-      {
-        status: 400,
-      },
-    );
-  }
-
-  return true;
-};
+} from '@/providers/database/query/StudentQuery';
+import { validateBody } from '@/providers/validations/student';
 
 export async function GET(request: NextRequest) {
   await connectDB();

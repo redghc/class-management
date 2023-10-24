@@ -1,4 +1,4 @@
-import StudentModel from '../models/Student';
+import StudentModel from '../models/StudentModel';
 
 export const getStudents = async (page: number, limit: number) => {
   return await StudentModel.find()

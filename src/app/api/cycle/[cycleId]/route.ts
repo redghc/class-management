@@ -6,10 +6,9 @@ import {
   changeCycleStatus,
   getCycleById,
   updateCycle,
-} from '@/providers/database/query/cycleQuery';
+} from '@/providers/database/query/CycleQuery';
+import { validateBody } from '@/providers/validations/cycle';
 import { validateBoolean, validateId } from '@/providers/validations/validations';
-
-import { validateBody } from '../route';
 
 interface Params {
   params: CycleParams;

@@ -6,47 +6,8 @@ import {
   createCycle,
   getCycles,
   getTotalCyclesAndPages,
-} from '@/providers/database/query/cycleQuery';
-
-export const validateBody = (body: ICycle) => {
-  if (!body.name || !body.startDate || !body.endDate || body.active == null) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Invalid body',
-      },
-      {
-        status: 400,
-      },
-    );
-  }
-
-  if (body.startDate > body.endDate) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Start date must be lower than end date',
-      },
-      {
-        status: 400,
-      },
-    );
-  }
-
-  if (body.startDate === body.endDate) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Start date must be different than end date',
-      },
-      {
-        status: 400,
-      },
-    );
-  }
-
-  return true;
-};
+} from '@/providers/database/query/CycleQuery';
+import { validateBody } from '@/providers/validations/cycle';
 
 export async function GET(request: NextRequest) {
   await connectDB();
