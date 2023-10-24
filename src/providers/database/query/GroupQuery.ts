@@ -1,3 +1,5 @@
+import { IGroup } from '@/interfaces/group';
+
 import GroupModel from '../models/GroupModel';
 
 export const getGroups = async (page: number, limit: number) => {
@@ -21,23 +23,12 @@ export const getTotalGroupsAndPages = async (limit: number) => {
   return { total, pages };
 };
 
-export const createGroup = async (
-  name: string,
-  degree: string,
-  subject: string,
-  cycleId: string,
-) => {
-  return await GroupModel.create({ name, degree, subject, cycleId });
+export const createGroup = async (group: IGroup) => {
+  return await GroupModel.create(group);
 };
 
-export const updateGroup = async (
-  id: string,
-  name: string,
-  degree: string,
-  subject: string,
-  cycleId: string,
-) => {
-  return await GroupModel.findByIdAndUpdate(id, { name, degree, subject, cycleId });
+export const updateGroup = async (id: string, group: IGroup) => {
+  return await GroupModel.findByIdAndUpdate(id, group);
 };
 
 export const changeGroupStatus = async (id: string, active: boolean) => {

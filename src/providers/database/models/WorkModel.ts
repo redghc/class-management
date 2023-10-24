@@ -1,14 +1,6 @@
 import { model, models, Schema } from 'mongoose';
 
-export interface IWork {
-  name: string;
-  description?: string;
-  limitDate?: Date;
-  groupId: string;
-  active: boolean;
-}
-
-export interface WorkDocument extends IWork, Document {}
+import { WorkDocument } from '@/interfaces/work';
 
 const WorkSchema = new Schema(
   {

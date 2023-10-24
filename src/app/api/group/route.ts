@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
 
   await connectDB();
 
-  const group = await createGroup(body.name, body.degree, body.subject, body.cycleId);
+  const group = await createGroup(body);
 
   const response = {
     status: 'success',

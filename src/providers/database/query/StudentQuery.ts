@@ -1,3 +1,5 @@
+import { IStudent } from '@/interfaces/student';
+
 import StudentModel from '../models/StudentModel';
 
 export const getStudents = async (page: number, limit: number) => {
@@ -30,31 +32,12 @@ export const getTotalStudentsAndPagesByGroup = async (groupId: string, limit: nu
   return { total, pages };
 };
 
-export const createStudent = async (
-  firstName: string,
-  secondName: string,
-  lastName: string,
-  secondLastName: string,
-  groupIds: string[],
-) => {
-  return await StudentModel.create({ firstName, secondName, lastName, secondLastName, groupIds });
+export const createStudent = async (student: IStudent) => {
+  return await StudentModel.create(student);
 };
 
-export const updateStudent = async (
-  id: string,
-  firstName: string,
-  secondName: string,
-  lastName: string,
-  secondLastName: string,
-  groupIds: string[],
-) => {
-  return await StudentModel.findByIdAndUpdate(id, {
-    firstName,
-    secondName,
-    lastName,
-    secondLastName,
-    groupIds,
-  });
+export const updateStudent = async (id: string, student: IStudent) => {
+  return await StudentModel.findByIdAndUpdate(id, student);
 };
 
 export const changeStudentStatus = async (id: string, active: boolean) => {

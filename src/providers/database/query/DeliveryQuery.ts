@@ -1,4 +1,4 @@
-import DeliveryModel from '../models/DeliveryModel';
+import DeliveryModel, { IDelivery } from '../models/DeliveryModel';
 
 export const getDeliveries = async (page: number, limit: number) => {
   return await DeliveryModel.find({ active: true })
@@ -40,8 +40,8 @@ export const getTotalDeliveriesAndPagesByStudent = async (studentId: string, lim
   return { total, pages };
 };
 
-export const createDelivery = async (studentId: string, workId: string, score: number) => {
-  return await DeliveryModel.create({ studentId, workId, score });
+export const createDelivery = async (delivery: IDelivery) => {
+  return await DeliveryModel.create(delivery);
 };
 
 export const updateDelivery = async (id: string, score: number) => {

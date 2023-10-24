@@ -1,3 +1,5 @@
+import { ICycle } from '@/interfaces/cycle';
+
 import CycleModel from '../models/CycleModel';
 
 export const getCycles = async (page: number, limit: number) => {
@@ -20,12 +22,12 @@ export const getTotalCyclesAndPages = async (limit: number) => {
   return { total, pages };
 };
 
-export const createCycle = async (name: string, startDate: Date, endDate: Date) => {
-  return await CycleModel.create({ name, startDate, endDate });
+export const createCycle = async (cycle: ICycle) => {
+  return await CycleModel.create(cycle);
 };
 
-export const updateCycle = async (id: string, name: string, startDate: Date, endDate: Date) => {
-  return await CycleModel.findByIdAndUpdate(id, { name, startDate, endDate });
+export const updateCycle = async (id: string, cycle: ICycle) => {
+  return await CycleModel.findByIdAndUpdate(id, cycle);
 };
 
 export const changeCycleStatus = async (id: string, active: boolean) => {

@@ -54,7 +54,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
 
   await connectDB();
 
-  const cycleData = await updateCycle(cycleId, body.name, body.startDate, body.endDate);
+  const cycleData = await updateCycle(cycleId, body);
 
   const response = {
     status: 'success',

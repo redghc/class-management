@@ -1,3 +1,5 @@
+import { IWork } from '@/interfaces/work';
+
 import WorkModel from '../models/WorkModel';
 
 export const getWorks = async (page: number, limit: number) => {
@@ -28,20 +30,14 @@ export const getTotalWorksAndPagesByGroup = async (groupId: string, limit: numbe
   return { total, pages };
 };
 
-export const createWork = async (
-  name: string,
-  description: string,
-  groupId: string,
-  limitDate?: Date,
-) => {
-  return await WorkModel.create({ name, description, groupId, limitDate });
+export const createWork = async (work: IWork) => {
+  return await WorkModel.create(work);
 };
 
-export const updateWork = async (
-  id: string,
-  name: string,
-  description: string,
-  limitDate?: Date,
-) => {
-  return await WorkModel.findByIdAndUpdate(id, { name, description, limitDate });
+export const updateWork = async (id: string, work: IWork) => {
+  return await WorkModel.findByIdAndUpdate(id, work);
+};
+
+export const changeWorkStatus = async (id: string, active: boolean) => {
+  return await WorkModel.findByIdAndUpdate(id, { active });
 };

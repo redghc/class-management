@@ -59,7 +59,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
 
   await connectDB();
 
-  const groupData = await updateGroup(groupId, body.name, body.degree, body.subject, body.cycleId);
+  const groupData = await updateGroup(groupId, body);
 
   const response = {
     status: 'success',

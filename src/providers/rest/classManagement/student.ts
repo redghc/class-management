@@ -34,8 +34,6 @@ export const updateStudent = async (id: string, data: IStudent) => {
 };
 
 export const updateStudentStatus = async (id: string, status: boolean) => {
-  const response = await ClassAPI.patch(`student/${id}`, {
-    json: { active: status },
-  }).json();
+  const response = await ClassAPI.patch(`student/${id}`, { json: { active: status } }).json();
   return response;
 };
