@@ -3,7 +3,6 @@
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ToggleOffIcon from '@mui/icons-material/ToggleOff';
 import Box from '@mui/material/Box';
-import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -17,8 +16,11 @@ import Typography from '@mui/material/Typography';
 import { DateTime } from 'luxon';
 
 import StatusChip from '@/components/StatusChip';
-import StudentsModal from '@/components/StudentModal';
+import WorkModal from '@/components/WorkModal';
 import { ISODateToString } from '@/providers/helpers/dates';
+
+import useWork from './useWork';
+import useWorkForm from './useWorkForm';
 
 const isExpired = (limitDate: string) => {
   const limit = DateTime.fromISO(limitDate);
@@ -28,6 +30,34 @@ const isExpired = (limitDate: string) => {
 };
 
 const Work = () => {
+  const {
+    page,
+    rowsPerPage,
+    countWorks,
+
+    handleChangePage,
+    handleChangeRowsPerPage,
+
+    status,
+    error,
+    data,
+
+    handleToggleStatus,
+
+    refetch,
+  } = useWork();
+
+  const {
+    control,
+    onSubmit,
+    loading,
+    groups,
+
+    open,
+    handleOpenModal,
+    handleCloseModal,
+  } = useWorkForm(refetch);
+
   if (status === 'pending') return <Box>Cargando...</Box>;
 
   if (status === 'error') return <Box>Error: {error?.message}</Box>;
@@ -65,10 +95,10 @@ const Work = () => {
                 <TableCell align="center">{row.name}</TableCell>
                 <TableCell align="center">{row.description}</TableCell>
                 <TableCell align="center">
-                  {row.limitDate ?? ISODateToString(row.limitDate)}
+                  {row.limitDate ? ISODateToString(row.limitDate) : 'N/A'}
                 </TableCell>
                 <TableCell align="center">
-                  <StatusChip status={isExpired(row.limitDate)} />
+                  {row.limitDate && <StatusChip status={isExpired(row.limitDate)} />}
                 </TableCell>
                 <TableCell align="center">
                   <StatusChip status={row.active} />
@@ -85,7 +115,7 @@ const Work = () => {
 
         <TablePagination
           component="div"
-          count={countGroups}
+          count={countWorks}
           page={page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}
@@ -97,7 +127,7 @@ const Work = () => {
         />
       </TableContainer>
 
-      <StudentsModal
+      <WorkModal
         control={control}
         handleClose={handleCloseModal}
         loading={loading}

@@ -5,13 +5,8 @@ import { HTTPError } from 'ky';
 import { DateTime } from 'luxon';
 import { useSnackbar } from 'notistack';
 
-import { ICycle } from '@/interfaces/cycle';
+import { CycleForm, ICycle } from '@/interfaces/cycle';
 import { createCycle } from '@/providers/rest/classManagement/cycle';
-
-export interface CycleForm extends Omit<ICycle, 'startDate' | 'endDate'> {
-  startDate: DateTime | null;
-  endDate: DateTime | null;
-}
 
 const initialState: CycleForm = {
   name: '',

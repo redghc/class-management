@@ -1,7 +1,6 @@
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Chip from '@mui/material/Chip';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -11,105 +10,83 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
+import { DatePicker } from '@mui/x-date-pickers';
 import { Control, Controller } from 'react-hook-form';
 
 import { RGroup } from '@/interfaces/group';
-import { StudentForm } from '@/interfaces/student';
+import { WorkForm } from '@/interfaces/work';
+import { DateTimeToJSDate, JSDateToDateTime } from '@/providers/helpers/dates';
 
-interface StudentsModalProps {
+interface WorkModalProps {
   open: boolean;
   handleClose: () => void;
 
   onSubmit: () => void;
-  control: Control<StudentForm, any>;
+  control: Control<WorkForm, any>;
 
   loading: boolean;
 
   groups: RGroup[];
 }
 
-const StudentsModal = ({
-  open,
-  handleClose,
-  onSubmit,
-  control,
-  loading,
-  groups,
-}: StudentsModalProps) => {
+const WorkModal = ({ open, handleClose, onSubmit, control, loading, groups }: WorkModalProps) => {
   return (
     <Dialog open={open} maxWidth="xs" fullWidth keepMounted>
       <form onSubmit={onSubmit}>
-        <DialogTitle>Añadir nuevo estudiante</DialogTitle>
+        <DialogTitle>Añadir nuevo trabajo</DialogTitle>
 
         <DialogContent dividers>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Controller
-              name="firstName"
+              name="name"
               control={control}
               render={({ field, fieldState }) => (
                 <>
-                  <TextField label="Primer nombre" {...field} fullWidth />
+                  <TextField label="Nombre" {...field} fullWidth />
                   {fieldState.error && <Alert severity="error">{fieldState.error.message}</Alert>}
                 </>
               )}
             />
 
             <Controller
-              name="secondName"
+              name="description"
               control={control}
               render={({ field, fieldState }) => (
                 <>
-                  <TextField label="Segundo nombre" {...field} fullWidth />
+                  <TextField label="Descripción" {...field} fullWidth />
                   {fieldState.error && <Alert severity="error">{fieldState.error.message}</Alert>}
                 </>
               )}
             />
 
             <Controller
-              name="lastName"
+              name="limitDate"
               control={control}
               render={({ field, fieldState }) => (
                 <>
-                  <TextField label="Primer apellido" {...field} fullWidth />
+                  <DatePicker
+                    label="Fecha límite"
+                    sx={{ width: '100%' }}
+                    disabled={field.disabled}
+                    onChange={(v) =>
+                      field.onChange({ target: { value: DateTimeToJSDate(v), name: field.name } })
+                    }
+                    ref={field.ref}
+                    value={JSDateToDateTime(field.value)}
+                  />
                   {fieldState.error && <Alert severity="error">{fieldState.error.message}</Alert>}
                 </>
               )}
             />
 
             <Controller
-              name="secondLastName"
-              control={control}
-              render={({ field, fieldState }) => (
-                <>
-                  <TextField label="Segundo apellido" {...field} fullWidth />
-                  {fieldState.error && <Alert severity="error">{fieldState.error.message}</Alert>}
-                </>
-              )}
-            />
-
-            <Controller
-              name="groupIds"
+              name="groupId"
               control={control}
               render={({ field, fieldState }) => (
                 <>
                   <FormControl fullWidth>
-                    <InputLabel>Grupos</InputLabel>
-                    <Select
-                      label="Grupos"
-                      {...field}
-                      fullWidth
-                      multiple
-                      renderValue={(selected) => (
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                          {selected.map((value) => (
-                            <Chip
-                              key={value}
-                              label={groups.find((group) => group._id === value)?.name ?? value}
-                            />
-                          ))}
-                        </Box>
-                      )}
-                    >
+                    <InputLabel>Grupo</InputLabel>
+                    <Select label="Grupo" {...field} fullWidth>
                       {groups.map((group) => (
                         <MenuItem key={group._id} value={group._id}>
                           {group.name}
@@ -137,4 +114,4 @@ const StudentsModal = ({
   );
 };
 
-export default StudentsModal;
+export default WorkModal;

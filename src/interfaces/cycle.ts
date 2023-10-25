@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import { Document } from 'mongoose';
 
 export interface ICycle {
@@ -8,6 +9,11 @@ export interface ICycle {
 }
 
 export interface CycleDocument extends ICycle, Document {}
+
+export interface CycleForm extends Omit<ICycle, 'startDate' | 'endDate'> {
+  startDate: DateTime | null;
+  endDate: DateTime | null;
+}
 
 export interface RCycle {
   _id: string;

@@ -11,7 +11,7 @@ import TextField from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers';
 import { DateTime } from 'luxon';
 
-import { CycleForm } from '@/app/dashboard/cycle/useCycleForm';
+import { CycleForm } from '@/interfaces/cycle';
 
 interface CycleModalProps {
   open: boolean;

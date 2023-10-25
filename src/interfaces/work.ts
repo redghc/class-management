@@ -4,13 +4,17 @@ import { RGroup } from './group';
 
 export interface IWork {
   name: string;
-  description?: string;
+  description: string;
   limitDate?: Date;
   groupId: string;
   active: boolean;
 }
 
 export interface WorkDocument extends IWork, Document {}
+
+export interface WorkForm extends Omit<IWork, 'limitDate'> {
+  limitDate: Date | null;
+}
 
 export interface RWork {
   _id: string;

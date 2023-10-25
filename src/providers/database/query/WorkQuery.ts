@@ -3,13 +3,13 @@ import { IWork } from '@/interfaces/work';
 import WorkModel from '../models/WorkModel';
 
 export const getWorks = async (page: number, limit: number) => {
-  return await WorkModel.find({ active: true })
+  return await WorkModel.find()
     .skip(page * limit)
     .limit(limit);
 };
 
 export const getWorksByGroup = async (groupId: string, page: number, limit: number) => {
-  return await WorkModel.find({ groupId, active: true })
+  return await WorkModel.find({ groupId })
     .skip(page * limit)
     .limit(limit);
 };
@@ -19,7 +19,7 @@ export const getWorkById = async (id: string) => {
 };
 
 export const getTotalWorksAndPages = async (limit: number) => {
-  const total = await WorkModel.countDocuments({ active: true });
+  const total = await WorkModel.countDocuments();
   const pages = Math.ceil(total / limit);
   return { total, pages };
 };
