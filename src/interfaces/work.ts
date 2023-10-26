@@ -19,7 +19,7 @@ export interface WorkForm extends Omit<IWork, 'limitDate'> {
 export interface RWork {
   _id: string;
   name: string;
-  description?: string;
+  description: string;
   limitDate?: string;
   groupId: RGroup;
   active: boolean;

@@ -1,13 +1,6 @@
 import { model, models, Schema } from 'mongoose';
 
-export interface IDelivery {
-  studentId: string;
-  workId: string;
-  score: number;
-  active: boolean;
-}
-
-export interface DeliveryDocument extends IDelivery, Document {}
+import { DeliveryDocument } from '@/interfaces/delivery';
 
 const DeliverySchema = new Schema(
   {

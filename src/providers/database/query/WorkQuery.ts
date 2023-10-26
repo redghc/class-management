@@ -4,18 +4,20 @@ import WorkModel from '../models/WorkModel';
 
 export const getWorks = async (page: number, limit: number) => {
   return await WorkModel.find()
+    .populate('groupId')
     .skip(page * limit)
     .limit(limit);
 };
 
 export const getWorksByGroup = async (groupId: string, page: number, limit: number) => {
   return await WorkModel.find({ groupId })
+    .populate('groupId')
     .skip(page * limit)
     .limit(limit);
 };
 
 export const getWorkById = async (id: string) => {
-  return await WorkModel.findById(id);
+  return await WorkModel.findById(id).populate('groupId');
 };
 
 export const getTotalWorksAndPages = async (limit: number) => {
