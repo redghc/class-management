@@ -1,4 +1,4 @@
-import { Document, model, models, Schema } from 'mongoose';
+import { Document, Model, model, models, Schema } from 'mongoose';
 
 export interface IAttendance {
   studentId: string;
@@ -19,4 +19,7 @@ const AttendanceSchema = new Schema<AttendanceDocument>(
   },
 );
 
-export default models.Attendance ?? model<AttendanceDocument>('Attendance', AttendanceSchema);
+const AttendanceModel: Model<AttendanceDocument> =
+  models.Attendance ?? model('Attendance', AttendanceSchema);
+
+export default AttendanceModel;

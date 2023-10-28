@@ -1,4 +1,4 @@
-import { model, models, Schema } from 'mongoose';
+import { Model, model, models, Schema } from 'mongoose';
 
 import { DeliveryDocument } from '@/interfaces/delivery';
 
@@ -14,4 +14,6 @@ const DeliverySchema = new Schema(
   },
 );
 
-export default models.Delivered ?? model<DeliveryDocument>('Delivered', DeliverySchema);
+const DeliveryModel: Model<DeliveryDocument> = models.Delivery ?? model('Delivery', DeliverySchema);
+
+export default DeliveryModel;

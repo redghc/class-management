@@ -1,4 +1,4 @@
-import { model, models, Schema } from 'mongoose';
+import { Model, model, models, Schema } from 'mongoose';
 
 import { GroupDegree, GroupDocument, GroupSubject } from '@/interfaces/group';
 
@@ -15,4 +15,6 @@ const GroupSchema = new Schema(
   },
 );
 
-export default models.Group ?? model<GroupDocument>('Group', GroupSchema);
+const GroupModel: Model<GroupDocument> = models.Group ?? model<GroupDocument>('Group', GroupSchema);
+
+export default GroupModel;

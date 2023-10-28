@@ -1,4 +1,4 @@
-import { model, models, Schema } from 'mongoose';
+import { Model, model, models, Schema } from 'mongoose';
 
 import { WorkDocument } from '@/interfaces/work';
 
@@ -15,4 +15,6 @@ const WorkSchema = new Schema(
   },
 );
 
-export default models.Work ?? model<WorkDocument>('Work', WorkSchema);
+const WorkModel: Model<WorkDocument> = models.Work ?? model<WorkDocument>('Work', WorkSchema);
+
+export default WorkModel;

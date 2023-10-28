@@ -1,4 +1,4 @@
-import { model, models, Schema } from 'mongoose';
+import { Model, model, models, Schema } from 'mongoose';
 
 import { StudentDocument } from '@/interfaces/student';
 
@@ -16,4 +16,7 @@ const StudentSchema = new Schema(
   },
 );
 
-export default models.Student ?? model<StudentDocument>('Student', StudentSchema);
+const StudentModel: Model<StudentDocument> =
+  models.Student ?? model<StudentDocument>('Student', StudentSchema);
+
+export default StudentModel;

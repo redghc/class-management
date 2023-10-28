@@ -1,4 +1,4 @@
-import { model, models, Schema } from 'mongoose';
+import { Model, model, models, Schema } from 'mongoose';
 
 import { CycleDocument } from '@/interfaces/cycle';
 
@@ -14,4 +14,6 @@ const CycleSchema = new Schema<CycleDocument>(
   },
 );
 
-export default models.Cycle ?? model<CycleDocument>('Cycle', CycleSchema);
+const CycleModel: Model<CycleDocument> = models.Cycle ?? model('Cycle', CycleSchema);
+
+export default CycleModel;
