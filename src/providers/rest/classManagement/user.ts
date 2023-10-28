@@ -21,7 +21,7 @@ export const login = async (data: ILogin) => {
 };
 
 export const logout = async () => {
-  const response = await ClassAPI.post('auth/logout').json();
+  const response = await ClassAPI.get('auth/logout').json();
   return response;
 };
 

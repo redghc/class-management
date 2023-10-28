@@ -1,8 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useCallback, useState } from 'react';
 
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import MenuIcon from '@mui/icons-material/Menu';
 import MuiAppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -13,11 +15,15 @@ import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import { styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
+import { useMutation } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
 
 import Logo from '@/components/Logo';
 import Spacer from '@/components/Spacer';
+import { logout } from '@/providers/rest/classManagement/user';
 
 import MenuList from './MenuList';
+import useLayout from './useLayout';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -101,8 +107,7 @@ const MenuIconButton = styled(IconButton, {
 }));
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
-  const [open, setOpen] = useState(false);
-  const toggleDrawer = () => setOpen(!open);
+  const { handleLogout, open, toggleDrawer, loading } = useLayout();
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -113,6 +118,9 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           </MenuIconButton>
           <Logo link size="small" />
           <Spacer />
+          <IconButton onClick={handleLogout} color="inherit" disabled={loading}>
+            <ExitToAppIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
 
