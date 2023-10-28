@@ -39,7 +39,15 @@ export async function POST(request: NextRequest) {
 
   await connectDB();
 
-  const work = await createWork(body);
+  const workCreate: IWork = {
+    name: body.name,
+    description: body.description,
+    limitDate: body.limitDate,
+    groupId: body.groupId,
+    active: true,
+  };
+
+  const work = await createWork(workCreate);
 
   const response = {
     status: 'success',

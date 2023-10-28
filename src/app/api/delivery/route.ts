@@ -42,7 +42,14 @@ export async function POST(request: NextRequest) {
 
   await connectDB();
 
-  const delivery = await createDelivery(body);
+  const deliveryCreate: IDelivery = {
+    studentId: body.studentId,
+    workId: body.workId,
+    score: body.score,
+    active: true,
+  };
+
+  const delivery = await createDelivery(deliveryCreate);
 
   const response = {
     status: 'success',

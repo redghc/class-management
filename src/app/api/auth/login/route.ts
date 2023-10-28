@@ -1,20 +1,14 @@
 import { NextRequest } from 'next/server';
 
-import bcrypt from 'bcrypt';
+import { compare } from 'bcrypt';
 import { serialize } from 'cookie';
 import { sign } from 'jsonwebtoken';
+import { omit } from 'lodash';
 
 import { connectDB } from '@/providers/database/mongoDB';
+import { getUserByEmail } from '@/providers/database/query/UserQuery';
 import { JWT_SECRET } from '@/providers/helpers/envs';
-import { validateBody } from '@/providers/validations/login';
-
-export interface ILogin {
-  email: string;
-  password: string;
-}
-
-const validEmail = 'prueba@email.com';
-const validPassword = '123456';
+import { ILogin, validateBody } from '@/providers/validations/login';
 
 // * POST - /api/auth/login - Login user
 export async function POST(request: NextRequest) {
@@ -27,10 +21,10 @@ export async function POST(request: NextRequest) {
 
   await connectDB();
 
-  const validPasswordCrypt = await bcrypt.hash(validPassword, 10);
+  const emailLowerCase = body.email.toLowerCase();
 
-  const isValid = await bcrypt.compare(body.password, validPasswordCrypt);
-  if (!isValid) {
+  const user = await getUserByEmail(emailLowerCase);
+  if (!user) {
     return Response.json(
       {
         status: 'error',
@@ -42,14 +36,27 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const user = { name: 'Prueba', email: validEmail };
+  const isValidPassword = await compare(body.password, user.password);
+  if (!isValidPassword) {
+    return Response.json(
+      {
+        status: 'error',
+        message: 'Invalid credentials',
+      },
+      {
+        status: 400,
+      },
+    );
+  }
+
+  const userWithoutPassword = omit(user.toObject(), ['password']);
 
   // Expiration in seconds - 1day after the token is generated
   const expiresIn = 60 * 60 * 24;
   const expiresAt = new Date().getTime() + expiresIn * 1000;
   const expiresAtISO = new Date(expiresAt).toISOString();
 
-  const token = sign({ data: user }, JWT_SECRET, { expiresIn: '1d' });
+  const token = sign({ data: userWithoutPassword }, JWT_SECRET, { expiresIn: '1d' });
 
   const serializedToken = serialize('token', token, {
     httpOnly: true,
@@ -67,7 +74,7 @@ export async function POST(request: NextRequest) {
       expiresAt,
       expiresAtISO,
       expiresIn,
-      data: user,
+      data: userWithoutPassword,
     },
   };
 

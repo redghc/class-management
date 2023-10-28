@@ -43,7 +43,14 @@ export async function POST(request: NextRequest) {
 
   await connectDB();
 
-  const cycle = await createCycle(body);
+  const cycleCreate: ICycle = {
+    name: body.name,
+    endDate: body.endDate,
+    startDate: body.startDate,
+    active: true,
+  };
+
+  const cycle = await createCycle(cycleCreate);
 
   const response = {
     status: 'success',

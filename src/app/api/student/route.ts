@@ -42,7 +42,16 @@ export async function POST(request: NextRequest) {
 
   await connectDB();
 
-  const student = await createStudent(body);
+  const studentCreate: IStudent = {
+    firstName: body.firstName,
+    secondName: body.secondName,
+    lastName: body.lastName,
+    secondLastName: body.secondLastName,
+    groupIds: body.groupIds,
+    active: true,
+  };
+
+  const student = await createStudent(studentCreate);
 
   const response = {
     status: 'success',

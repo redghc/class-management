@@ -1,6 +1,9 @@
-import { ILogin } from '@/app/api/auth/login/route';
-
 import { validateEmail } from './validations';
+
+export interface ILogin {
+  email: string;
+  password: string;
+}
 
 export const validateBody = (body: ILogin) => {
   if (!body.email) {

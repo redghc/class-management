@@ -2,6 +2,7 @@ import { IUser } from '@/interfaces/user';
 
 import UserModel from '../models/UserModel';
 
+// Get user by email - Exclude password
 export const getUserByEmail = async (email: string) => {
   return await UserModel.findOne({ email });
 };

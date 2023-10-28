@@ -1,4 +1,5 @@
 import { IDelivery } from '@/interfaces/delivery';
+
 import { validateId } from './validations';
 
 export const validateBody = (body: IDelivery) => {
