@@ -30,7 +30,7 @@ export const MENU_ITEMS: MenuItem[] = [
     icon: PersonIcon,
   },
   {
-    name: 'Tareas',
+    name: 'Actividades',
     url: '/dashboard/work',
     icon: LayersIcon,
   },

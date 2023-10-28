@@ -1,15 +1,18 @@
 'use client';
 
-import Link from 'next/link';
 import React from 'react';
 
+import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
+import { Controller } from 'react-hook-form';
 
 import Logo from '@/components/Logo';
+
+import useLogin from './useLogin';
 
 const MainContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -27,7 +30,7 @@ const LoginContainer = styled(Paper)({
   alignItems: 'center',
   padding: '2rem',
   width: '30rem',
-  height: '30rem',
+  minHeight: '30rem',
   gap: '2rem',
 });
 
@@ -45,25 +48,46 @@ const Form = styled('form')({
 });
 
 const Login = () => {
+  const { control, loading, onSubmit } = useLogin();
+
   return (
     <MainContainer>
       <LoginContainer>
         <Logo />
 
         <Subtitle>Iniciar sesión</Subtitle>
-        <Form>
-          <TextField fullWidth placeholder="Usuario" id="username" />
-          <TextField fullWidth placeholder="Contraseña" id="password" type="password" />
+        <Form onSubmit={onSubmit}>
+          <Controller
+            name="email"
+            control={control}
+            render={({ field, fieldState }) => (
+              <>
+                <TextField fullWidth placeholder="Usuario" {...field} />
+                {fieldState.error && <Alert severity="error">{fieldState.error.message}</Alert>}
+              </>
+            )}
+          />
+          <Controller
+            name="password"
+            control={control}
+            render={({ field, fieldState }) => (
+              <>
+                <TextField fullWidth placeholder="Contraseña" {...field} type="password" />
+                {fieldState.error && <Alert severity="error">{fieldState.error.message}</Alert>}
+              </>
+            )}
+          />
+          <Button
+            fullWidth
+            type="submit"
+            variant="contained"
+            size="large"
+            color="primary"
+            disabled={loading}
+          >
+            Iniciar sesión
+          </Button>
         </Form>
-        <Button
-          fullWidth
-          variant="contained"
-          size="large"
-          LinkComponent={Link}
-          href="/dashboard/home"
-        >
-          Iniciar sesión
-        </Button>
       </LoginContainer>
     </MainContainer>
   );

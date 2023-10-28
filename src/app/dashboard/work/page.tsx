@@ -66,7 +66,7 @@ const Work = () => {
     <>
       <Box>
         <Typography variant="h4" component="h1" gutterBottom>
-          Trabajos
+          Actividades
         </Typography>
       </Box>
 

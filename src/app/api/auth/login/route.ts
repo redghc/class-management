@@ -5,10 +5,11 @@ import { serialize } from 'cookie';
 import { sign } from 'jsonwebtoken';
 import { omit } from 'lodash';
 
+import { ILogin } from '@/interfaces/user';
 import { connectDB } from '@/providers/database/mongoDB';
 import { getUserByEmail } from '@/providers/database/query/UserQuery';
 import { JWT_SECRET } from '@/providers/helpers/envs';
-import { ILogin, validateBody } from '@/providers/validations/login';
+import { validateBody } from '@/providers/validations/login';
 
 // * POST - /api/auth/login - Login user
 export async function POST(request: NextRequest) {

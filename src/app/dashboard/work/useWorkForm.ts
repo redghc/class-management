@@ -72,7 +72,7 @@ const useWorkForm = (refetch: () => void) => {
 
       mutation.mutate(newData, {
         onSuccess: () => {
-          enqueueSnackbar('Trabajo creado correctamente', { variant: 'success' });
+          enqueueSnackbar('Actividad creada correctamente', { variant: 'success' });
           handleCloseModal();
         },
         onError: (error) => {
@@ -83,7 +83,7 @@ const useWorkForm = (refetch: () => void) => {
             return;
           }
 
-          enqueueSnackbar('Ocurrió un error al crear el trabajo, intenta mas tarde', {
+          enqueueSnackbar('Ocurrió un error al crear la actividad, intenta mas tarde', {
             variant: 'error',
           });
         },

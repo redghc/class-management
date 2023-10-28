@@ -33,7 +33,7 @@ const WorkModal = ({ open, handleClose, onSubmit, control, loading, groups }: Wo
   return (
     <Dialog open={open} maxWidth="xs" fullWidth keepMounted>
       <form onSubmit={onSubmit}>
-        <DialogTitle>Añadir nuevo trabajo</DialogTitle>
+        <DialogTitle>Añadir nueva actividad</DialogTitle>
 
         <DialogContent dividers>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>

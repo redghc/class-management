@@ -1,9 +1,6 @@
-import { validateEmail } from './validations';
+import { ILogin } from '@/interfaces/user';
 
-export interface ILogin {
-  email: string;
-  password: string;
-}
+import { validateEmail } from './validations';
 
 export const validateBody = (body: ILogin) => {
   if (!body.email) {

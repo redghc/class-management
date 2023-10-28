@@ -20,3 +20,8 @@ export interface RUser {
   updatedAt: string;
   __v: number;
 }
+
+export interface ILogin {
+  email: string;
+  password: string;
+}

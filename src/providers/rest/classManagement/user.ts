@@ -1,5 +1,4 @@
-import { IUser, RUser } from '@/interfaces/user';
-import { ILogin } from '@/providers/validations/login';
+import { ILogin, IUser, RUser } from '@/interfaces/user';
 
 import { ClassAPI } from './ClassAPI';
 
