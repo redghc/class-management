@@ -32,3 +32,32 @@ export const validateBoolean = (active: boolean) => {
 
   return true;
 };
+
+export const validateEmail = (email: string) => {
+  if (!email) {
+    return Response.json(
+      {
+        status: 'error',
+        message: 'Email is required',
+      },
+      {
+        status: 400,
+      },
+    );
+  }
+
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!emailRegex.test(email)) {
+    return Response.json(
+      {
+        status: 'error',
+        message: 'Invalid email',
+      },
+      {
+        status: 400,
+      },
+    );
+  }
+
+  return true;
+};
