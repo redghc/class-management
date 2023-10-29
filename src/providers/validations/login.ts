@@ -1,13 +1,12 @@
 import { ILogin } from '@/interfaces/user';
 
+import { createError, error2Response } from './error';
 import { validateEmail } from './validations';
 
 export const validateBody = (body: ILogin) => {
   if (!body.email) {
-    return Response.json({
-      status: 'error',
-      message: 'Email is required',
-    });
+    const error = createError(400, 'Email is required');
+    return error2Response(error);
   }
 
   const validEmail = validateEmail(body.email);
@@ -16,10 +15,8 @@ export const validateBody = (body: ILogin) => {
   }
 
   if (!body.password) {
-    return Response.json({
-      status: 'error',
-      message: 'Password is required',
-    });
+    const error = createError(400, 'Password is required');
+    return error2Response(error);
   }
 
   return true;

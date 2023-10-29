@@ -2,6 +2,8 @@ import { isValidObjectId } from 'mongoose';
 
 import { IStudent } from '@/interfaces/student';
 
+import { createError, error2Response } from './error';
+
 export const validateBody = (body: IStudent) => {
   if (
     !body.firstName ||
@@ -10,40 +12,19 @@ export const validateBody = (body: IStudent) => {
     !body.secondLastName ||
     body.active == null
   ) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Invalid body',
-      },
-      {
-        status: 400,
-      },
-    );
+    const error = createError(400, 'Invalid body');
+    return error2Response(error);
   }
 
   if (!Array.isArray(body.groupIds) || body.groupIds.length === 0) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Invalid body',
-      },
-      {
-        status: 400,
-      },
-    );
+    const error = createError(400, 'Invalid body');
+    return error2Response(error);
   }
 
   const isValidGroups = body.groupIds.every((groupId) => isValidObjectId(groupId));
   if (!isValidGroups) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Invalid group ids',
-      },
-      {
-        status: 400,
-      },
-    );
+    const error = createError(400, 'Invalid group ids');
+    return error2Response(error);
   }
 
   return true;

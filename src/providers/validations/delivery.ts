@@ -1,18 +1,12 @@
 import { IDelivery } from '@/interfaces/delivery';
 
+import { createError, error2Response } from './error';
 import { validateId } from './validations';
 
 export const validateBody = (body: IDelivery) => {
   if (!body.studentId || !body.workId || body.score == null || body.active == null) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Invalid body',
-      },
-      {
-        status: 400,
-      },
-    );
+    const error = createError(400, 'Invalid body');
+    return error2Response(error);
   }
 
   const isValidStudentId = validateId(body.studentId, 'studentId');

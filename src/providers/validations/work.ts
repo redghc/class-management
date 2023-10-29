@@ -1,18 +1,12 @@
 import { IWork } from '@/interfaces/work';
 
+import { createError, error2Response } from './error';
 import { validateId } from './validations';
 
 export const validateBody = (body: IWork) => {
   if (!body.name || !body.description || body.active == null) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Invalid body',
-      },
-      {
-        status: 400,
-      },
-    );
+    const error = createError(400, 'Invalid body');
+    return error2Response(error);
   }
 
   const isValidGroup = validateId(body.groupId, 'group');
@@ -21,15 +15,8 @@ export const validateBody = (body: IWork) => {
   }
 
   if (body.limitDate && body.limitDate < new Date()) {
-    return Response.json(
-      {
-        status: 'error',
-        message: 'Limit date must be greater than today',
-      },
-      {
-        status: 400,
-      },
-    );
+    const error = createError(400, 'Limit date must be greater than today');
+    return error2Response(error);
   }
 
   return true;
