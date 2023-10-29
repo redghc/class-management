@@ -39,7 +39,9 @@ const Delivery = () => {
     control,
     onSubmit,
     loading,
+
     works,
+    students,
 
     open,
     handleOpenModal,
@@ -79,9 +81,10 @@ const Delivery = () => {
           <TableBody>
             {data.map((row) => (
               <TableRow key={row._id}>
-                <TableCell align="center">{row.score}</TableCell>
-                <TableCell align="center">{row.score}</TableCell>
-                <TableCell align="center">{row.score}</TableCell>
+                <TableCell align="center">
+                  {row.studentId.firstName} {row.studentId.lastName}
+                </TableCell>
+                <TableCell align="center">{row.workId.name}</TableCell>
                 <TableCell align="center">{row.score}</TableCell>
                 <TableCell align="center">
                   <StatusChip status={row.active} />
@@ -113,7 +116,7 @@ const Delivery = () => {
         onSubmit={onSubmit}
         open={open}
         works={works}
-        students={[]}
+        students={students}
       />
     </>
   );

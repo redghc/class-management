@@ -2,10 +2,13 @@ import { IDelivery } from '@/interfaces/delivery';
 
 import DeliveryModel from '../models/DeliveryModel';
 
+// Populate workId and studentId
 export const getDeliveries = async (page: number, limit: number) => {
   return await DeliveryModel.find({ active: true })
     .skip(page * limit)
-    .limit(limit);
+    .limit(limit)
+    .populate('workId')
+    .populate('studentId');
 };
 
 export const getDeliveriesByWork = async (workId: string, page: number, limit: number) => {

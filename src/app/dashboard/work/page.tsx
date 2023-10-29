@@ -13,7 +13,6 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
-import { DateTime } from 'luxon';
 
 import StatusChip from '@/components/StatusChip';
 import WorkModal from '@/components/WorkModal';
@@ -75,6 +74,7 @@ const Work = () => {
             <TableRow>
               <TableCell align="center">Nombre</TableCell>
               <TableCell align="center">Descripción</TableCell>
+              <TableCell align="center">Grupo</TableCell>
               <TableCell align="center">Fecha limite</TableCell>
               <TableCell align="center">Expirada</TableCell>
               <TableCell align="center">Estatus</TableCell>
@@ -87,6 +87,7 @@ const Work = () => {
               <TableRow key={row._id}>
                 <TableCell align="center">{row.name}</TableCell>
                 <TableCell align="center">{row.description}</TableCell>
+                <TableCell align="center">{row.groupId.name}</TableCell>
                 <TableCell align="center">
                   {row.limitDate ? ISODateToString(row.limitDate) : 'N/A'}
                 </TableCell>

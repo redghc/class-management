@@ -28,9 +28,11 @@ export const getActiveStudentsByGroup = async (groupId: string) => {
 export const getActiveStudentsByGroupWithoutWork = async (groupId: string, workId: string) => {
   const deliveries = await DeliveryModel.find({ workId }).select('studentId');
   const studentsId = deliveries.map((delivery) => delivery.studentId);
-  return await StudentModel.find({ groupId, active: true, _id: { $nin: studentsId } }).populate(
-    'groupIds',
-  );
+  return await StudentModel.find({
+    groupIds: groupId,
+    active: true,
+    _id: { $nin: studentsId },
+  }).populate('groupIds');
 };
 
 export const getStudentById = async (id: string) => {

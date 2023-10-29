@@ -9,10 +9,7 @@ import { bool, number, object, ObjectSchema, string } from 'yup';
 
 import { DeliveryForm } from '@/interfaces/delivery';
 import { createDelivery } from '@/providers/rest/classManagement/delivery';
-import {
-  getActiveStudentsByGroup,
-  getActiveStudentsByGroupWithoutWork,
-} from '@/providers/rest/classManagement/student';
+import { getActiveStudentsByGroupWithoutWork } from '@/providers/rest/classManagement/student';
 import { getWorksActive } from '@/providers/rest/classManagement/work';
 
 const initialState: DeliveryForm = {
@@ -25,7 +22,10 @@ const initialState: DeliveryForm = {
 const validationSchema: ObjectSchema<DeliveryForm> = object({
   workId: string().trim().required('La actividad es requerida'),
   studentId: string().trim().required('El estudiante es requerido'),
-  score: number().min(0).max(100).required('La nota es requerida'),
+  score: number()
+    .min(0, 'La nota mínima es 0')
+    .max(100, 'La nota máxima es 100')
+    .required('La nota es requerida'),
   active: bool().required(),
 });
 
