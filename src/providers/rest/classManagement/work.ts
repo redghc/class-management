@@ -11,8 +11,20 @@ export interface WorksResponse {
   pages: number;
 }
 
+export interface WorksActiveResponse {
+  status: string;
+  data: RWork[];
+}
+
 export const getWorks = async (page: number, limit: number) => {
   const response = await ClassAPI.get(`work?page=${page}&limit=${limit}`).json<WorksResponse>();
+  return response;
+};
+
+export const getWorksActive = async (includeExpired: boolean) => {
+  const response = await ClassAPI.get(
+    `work/active?includeExpired=${includeExpired}`,
+  ).json<WorksResponse>();
   return response;
 };
 

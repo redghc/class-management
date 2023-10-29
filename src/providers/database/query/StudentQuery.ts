@@ -1,5 +1,6 @@
 import { IStudent } from '@/interfaces/student';
 
+import DeliveryModel from '../models/DeliveryModel';
 import StudentModel from '../models/StudentModel';
 
 export const getStudents = async (page: number, limit: number) => {
@@ -9,11 +10,27 @@ export const getStudents = async (page: number, limit: number) => {
     .limit(limit);
 };
 
+export const getActiveStudents = async () => {
+  return await StudentModel.find({ active: true }).populate('groupIds');
+};
+
 export const getStudentsByGroup = async (groupId: string, page: number, limit: number) => {
   return await StudentModel.find({ groupId })
     .populate('groupIds')
     .skip(page * limit)
     .limit(limit);
+};
+
+export const getActiveStudentsByGroup = async (groupId: string) => {
+  return await StudentModel.find({ groupId, active: true }).populate('groupIds');
+};
+
+export const getActiveStudentsByGroupWithoutWork = async (groupId: string, workId: string) => {
+  const deliveries = await DeliveryModel.find({ workId }).select('studentId');
+  const studentsId = deliveries.map((delivery) => delivery.studentId);
+  return await StudentModel.find({ groupId, active: true, _id: { $nin: studentsId } }).populate(
+    'groupIds',
+  );
 };
 
 export const getStudentById = async (id: string) => {

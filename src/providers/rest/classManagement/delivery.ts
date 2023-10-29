@@ -1,4 +1,4 @@
-import { RDelivery } from '@/interfaces/delivery';
+import { IDelivery, RDelivery } from '@/interfaces/delivery';
 
 import { ClassAPI } from './ClassAPI';
 
@@ -23,12 +23,12 @@ export const getDelivery = async (id: string) => {
   return response;
 };
 
-export const createDelivery = async (data: RDelivery) => {
+export const createDelivery = async (data: IDelivery) => {
   const response = await ClassAPI.post('delivery', { json: data }).json();
   return response;
 };
 
-export const updateDelivery = async (id: string, data: RDelivery) => {
+export const updateDelivery = async (id: string, data: IDelivery) => {
   const response = await ClassAPI.put(`delivery/${id}`, { json: data }).json();
   return response;
 };

@@ -9,6 +9,15 @@ export const getWorks = async (page: number, limit: number) => {
     .limit(limit);
 };
 
+export const getActiveWorks = async (includeExpired: boolean) => {
+  if (includeExpired) {
+    return await WorkModel.find({ active: true }).populate('groupId');
+  }
+  return await WorkModel.find({ active: true, limitDate: { $gte: new Date() } }).populate(
+    'groupId',
+  );
+};
+
 export const getWorksByGroup = async (groupId: string, page: number, limit: number) => {
   return await WorkModel.find({ groupId })
     .populate('groupId')

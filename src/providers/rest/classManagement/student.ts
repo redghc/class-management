@@ -11,10 +11,34 @@ export interface StudentsResponse {
   pages: number;
 }
 
+export interface StudentsActiveResponse {
+  status: string;
+  data: RStudent[];
+}
+
 export const getStudents = async (page: number, limit: number) => {
   const response = await ClassAPI.get(
     `student?page=${page}&limit=${limit}`,
   ).json<StudentsResponse>();
+  return response;
+};
+
+export const getActiveStudents = async () => {
+  const response = await ClassAPI.get(`student/active`).json<StudentsActiveResponse>();
+  return response;
+};
+
+export const getActiveStudentsByGroup = async (groupId: string) => {
+  const response = await ClassAPI.get(
+    `student/active?groupId=${groupId}`,
+  ).json<StudentsActiveResponse>();
+  return response;
+};
+
+export const getActiveStudentsByGroupWithoutWork = async (groupId: string, workId: string) => {
+  const response = await ClassAPI.get(
+    `student/active?groupId=${groupId}&neWorkId=${workId}`,
+  ).json<StudentsActiveResponse>();
   return response;
 };
 

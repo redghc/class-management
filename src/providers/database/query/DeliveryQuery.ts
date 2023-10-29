@@ -1,4 +1,6 @@
-import DeliveryModel, { IDelivery } from '../models/DeliveryModel';
+import { IDelivery } from '@/interfaces/delivery';
+
+import DeliveryModel from '../models/DeliveryModel';
 
 export const getDeliveries = async (page: number, limit: number) => {
   return await DeliveryModel.find({ active: true })

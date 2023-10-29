@@ -21,3 +21,11 @@ export const DateTimeToJSDate = (date: DateTime | null): Date | null => {
   if (!date) return null;
   return date.toJSDate();
 };
+
+// * Is date expired
+export const isDateExpired = (date: string): boolean => {
+  const now = DateTime.local();
+  const dateToCheck = DateTime.fromISO(date);
+
+  return dateToCheck > now;
+};

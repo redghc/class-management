@@ -17,17 +17,10 @@ import { DateTime } from 'luxon';
 
 import StatusChip from '@/components/StatusChip';
 import WorkModal from '@/components/WorkModal';
-import { ISODateToString } from '@/providers/helpers/dates';
+import { isDateExpired, ISODateToString } from '@/providers/helpers/dates';
 
 import useWork from './useWork';
 import useWorkForm from './useWorkForm';
-
-const isExpired = (limitDate: string) => {
-  const limit = DateTime.fromISO(limitDate);
-  const now = DateTime.now();
-
-  return now > limit;
-};
 
 const Work = () => {
   const {
@@ -98,7 +91,7 @@ const Work = () => {
                   {row.limitDate ? ISODateToString(row.limitDate) : 'N/A'}
                 </TableCell>
                 <TableCell align="center">
-                  {row.limitDate && <StatusChip status={isExpired(row.limitDate)} />}
+                  {row.limitDate && <StatusChip status={isDateExpired(row.limitDate)} />}
                 </TableCell>
                 <TableCell align="center">
                   <StatusChip status={row.active} />

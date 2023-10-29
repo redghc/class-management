@@ -4,18 +4,20 @@ import { RStudent } from './student';
 import { RWork } from './work';
 
 export interface IDelivery {
-  studentId: string;
   workId: string;
+  studentId: string;
   score: number;
   active: boolean;
 }
 
 export interface DeliveryDocument extends IDelivery, Document {}
 
+export interface DeliveryForm extends IDelivery {}
+
 export interface RDelivery {
   _id: string;
-  studentId: RStudent;
   workId: RWork;
+  studentId: RStudent;
   score: number;
   active: boolean;
   createdAt: string;

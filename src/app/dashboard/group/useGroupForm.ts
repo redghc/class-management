@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -61,37 +61,37 @@ const useGroupForm = (refetch: () => void) => {
     reset(initialState);
   }, []);
 
-  const onSubmit = useCallback(
-    async (data: GroupForm) => {
-      mutation.mutate(data, {
-        onSuccess: () => {
-          enqueueSnackbar('Grupo creado correctamente', { variant: 'success' });
-          handleCloseModal();
-        },
-        onError: (error) => {
-          console.error('Error: GroupForm', error);
+  const onSubmit = useCallback(async (data: GroupForm) => {
+    mutation.mutate(data, {
+      onSuccess: () => {
+        enqueueSnackbar('Grupo creado correctamente', { variant: 'success' });
+        handleCloseModal();
+      },
+      onError: (error) => {
+        console.error('Error: GroupForm', error);
 
-          if (error instanceof HTTPError) {
-            enqueueSnackbar(error.message, { variant: 'error' });
-            return;
-          }
+        if (error instanceof HTTPError) {
+          enqueueSnackbar(error.message, { variant: 'error' });
+          return;
+        }
 
-          enqueueSnackbar('Ocurrió un error al crear el grupo, intenta mas tarde', {
-            variant: 'error',
-          });
-        },
-      });
-    },
-    [mutation],
-  );
+        enqueueSnackbar('Ocurrió un error al crear el grupo, intenta mas tarde', {
+          variant: 'error',
+        });
+      },
+    });
+  }, []);
 
   const handleSubmitForm = useCallback(handleSubmit(onSubmit), [onSubmit]);
+
+  const loading = useMemo(() => mutation.isPending ?? isLoading, [mutation.isPending, isLoading]);
+  const cycles = useMemo(() => data?.data ?? [], [data?.data]);
 
   return {
     control,
     onSubmit: handleSubmitForm,
-    loading: mutation.isPending ?? isLoading,
-    cycles: data?.data ?? [],
+    loading,
+    cycles,
 
     open,
     handleOpenModal,
