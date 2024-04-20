@@ -23,6 +23,14 @@ export const getDeliveriesByStudent = async (studentId: string, page: number, li
     .limit(limit);
 };
 
+export const getDeliveriesByStudentAll = async (studentId: string) => {
+  return await DeliveryModel.find({ studentId, active: true });
+};
+
+export const getDeliveryByWorkAndStudent = async (workId: string, studentId: string) => {
+  return await DeliveryModel.findOne({ workId, studentId, active: true });
+};
+
 export const getDeliveryById = async (id: string) => {
   return await DeliveryModel.findById(id);
 };

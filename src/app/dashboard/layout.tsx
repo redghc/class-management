@@ -1,8 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useCallback, useState } from 'react';
-
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -15,12 +12,9 @@ import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import { styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
-import { useMutation } from '@tanstack/react-query';
-import { useSnackbar } from 'notistack';
 
 import Logo from '@/components/Logo';
 import Spacer from '@/components/Spacer';
-import { logout } from '@/providers/rest/classManagement/user';
 
 import MenuList from './MenuList';
 import useLayout from './useLayout';
